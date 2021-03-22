@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author onion
  * @date 2021/3/22 -8:09 上午
  */
-public interface DiseaseDao extends JpaRepository<Long, Disease> {
+public interface DiseaseDao extends JpaRepository<Disease, Long> {
 }

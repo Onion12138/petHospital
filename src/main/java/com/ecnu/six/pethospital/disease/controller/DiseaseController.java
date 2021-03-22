@@ -2,9 +2,12 @@ package com.ecnu.six.pethospital.disease.controller;
 
 import com.ecnu.six.pethospital.common.ResponseData;
 import com.ecnu.six.pethospital.disease.service.DiseaseService;
+import com.ecnu.six.pethospital.disease.vo.DiseaseVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * @author onion
@@ -17,6 +20,7 @@ public class DiseaseController {
 
     @GetMapping("findAll")
     public ResponseData findAll() {
-        return ResponseData.success();
+        List<DiseaseVO> diseaseVOList = diseaseService.findAll();
+        return ResponseData.success(diseaseVOList);
     }
 }
