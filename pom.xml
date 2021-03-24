@@ -53,18 +53,18 @@
             <artifactId>ibatis-core</artifactId>
             <version>3.0</version>
         </dependency>
-        <dependency>
-            <groupId>cn.mpy634</groupId>
-            <artifactId>BetterBuilder</artifactId>
-            <version>1.0.8</version>
-            <scope>provided</scope>
-            <exclusions>
-                <exclusion>
-                    <artifactId>tools</artifactId>
-                    <groupId>cn.mpy634</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>cn.mpy634</groupId>-->
+<!--            <artifactId>BetterBuilder</artifactId>-->
+<!--            <version>1.0.8</version>-->
+<!--            <scope>provided</scope>-->
+<!--            <exclusions>-->
+<!--                <exclusion>-->
+<!--                    <artifactId>tools</artifactId>-->
+<!--                    <groupId>cn.mpy634</groupId>-->
+<!--                </exclusion>-->
+<!--            </exclusions>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>org.mybatis.generator</groupId>
             <artifactId>mybatis-generator-core</artifactId>

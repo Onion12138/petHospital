@@ -105,6 +105,8 @@ public class OauthService {
         String uuid = authUser.getUuid();
         String source = authUser.getSource();
         SocialUser  socialUser = null;
+        // test 勿动
+        JSON.toJSONString(localUserMapper.selectByPrimaryKey(1));
         LogVO logVO = new LogVO();
         if ((socialUser = socialUserMapper.selectByUuidAndSource(uuid, source)) == null) {
             // 存入

@@ -1,7 +1,7 @@
 package com.ecnu.six.pethospital.oauth.form;
 
-import cn.mpy634.annotation.BetterBuilder;
-import cn.mpy634.enums.BuilderType;
+import lombok.Data;
+import lombok.experimental.Accessors;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
@@ -12,7 +12,8 @@ import javax.validation.constraints.NotBlank;
  * @desc
  * @since
  */
-@BetterBuilder(BUILDER_TYPE = BuilderType.NO_BUILDER)
+@Data
+@Accessors(fluent = true)
 public class LoginForm {
 
     @NotBlank
