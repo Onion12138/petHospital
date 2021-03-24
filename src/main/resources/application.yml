@@ -1,1 +1,26 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://xxxx:3306/hospital?serverTimezone=Asia/Shanghai&useSSL=false&characterEncoding=utf8
+    username: root
+    password:
 
+mybatis:
+  mapper-locations: classpath*:mapper/*/*.xml
+justauth:
+  enabled: true
+  type:
+#    QQ:
+#      client-id: 10**********6
+#      client-secret: 1f7d08**********5b7**********29e
+#      redirect-uri: http://oauth.xkcoding.com/demo/oauth/qq/callback
+#      union-id: false
+    GOOGLE:
+      client-id:
+      client-secret:
+      redirect-uri: http://localhost:8080/oauth/google/callback
+  cache:
+    type: default
+
+server:
+  port: 8080

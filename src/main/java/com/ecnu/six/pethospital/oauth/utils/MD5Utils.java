@@ -3,7 +3,7 @@ package com.ecnu.six.pethospital.oauth.utils;
 import org.springframework.util.DigestUtils;
 
 import java.sql.Timestamp;
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 /**
  * @author LEO D PEN
@@ -19,10 +19,10 @@ public class MD5Utils {
         return DigestUtils.md5DigestAsHex((SALT + original).getBytes());
     }
 
-    public static String TokenUtil(String stuId) {
-        Timestamp timestamp = Timestamp.from(Instant.now());
-        String token = stuId + "#" + timestamp.toString();
-        return token;
+    public static Pair<String, Timestamp> TokenUtil(String stuId) {
+        Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now().plusDays(1));
+        String token = pwdMd5(stuId);
+        return Pair.of(token, timestamp);
     }
 
 

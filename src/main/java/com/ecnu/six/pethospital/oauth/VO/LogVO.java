@@ -16,4 +16,6 @@ public class LogVO {
 
     private Integer socialUsrId;
 
+    private String token;
+
 }

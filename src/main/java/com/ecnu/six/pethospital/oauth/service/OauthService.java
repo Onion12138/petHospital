@@ -1,6 +1,8 @@
 package com.ecnu.six.pethospital.oauth.service;
 
+import com.alibaba.fastjson.JSON;
 import com.ecnu.six.pethospital.oauth.VO.LogVO;
+import com.ecnu.six.pethospital.oauth.config.CacheConfig;
 import com.ecnu.six.pethospital.oauth.entity.LocalUser;
 import com.ecnu.six.pethospital.oauth.entity.SLU;
 import com.ecnu.six.pethospital.oauth.entity.SocialUser;
@@ -10,6 +12,7 @@ import com.ecnu.six.pethospital.oauth.mapper.LocalUserMapper;
 import com.ecnu.six.pethospital.oauth.mapper.SLUMapper;
 import com.ecnu.six.pethospital.oauth.mapper.SocialUserMapper;
 import com.ecnu.six.pethospital.oauth.utils.MD5Utils;
+import com.ecnu.six.pethospital.oauth.utils.Pair;
 import me.zhyd.oauth.model.AuthCallback;
 import me.zhyd.oauth.model.AuthResponse;
 import me.zhyd.oauth.model.AuthUser;
@@ -18,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.sql.Timestamp;
 
 /**
  * @author LEO D PEN
@@ -37,6 +41,9 @@ public class OauthService {
     @Resource
     private SocialUserMapper socialUserMapper;
 
+    @Resource
+    private CacheConfig cache;
+
 
     // 我不管了我透传了
     private LocalUser judgeIfLoginSuccess(String stuId, String pwd) {
@@ -47,8 +54,19 @@ public class OauthService {
         return null;
     }
 
-    public LocalUser loginByForm(LoginForm form) {
-        return judgeIfLoginSuccess(form.stuId(), form.pwd());
+    public LogVO loginByForm(LoginForm form) {
+        LocalUser user = judgeIfLoginSuccess(form.stuId(), form.pwd());
+        if (user == null) {
+            return null;
+        }
+        LogVO logVO = new LogVO();
+        logVO.setUser(user);
+        // 搞token
+        Pair<String, Timestamp> pair = MD5Utils.TokenUtil(user.getStuId());
+        cache.userTokenCache.putIfAbsent(pair.getLeft(), pair.getRight());
+        // 传回
+        logVO.setToken(pair.getLeft());
+        return logVO;
     }
 
     public boolean saveOne(LoginForm form) {
@@ -83,6 +101,7 @@ public class OauthService {
     public LogVO loginByThirdParty(AuthRequest request, AuthCallback callback) {
         AuthResponse response = request.login(callback);
         AuthUser authUser = (AuthUser) response.getData();
+        System.out.println(JSON.toJSONString(authUser));
         String uuid = authUser.getUuid();
         String source = authUser.getSource();
         SocialUser  socialUser = null;
@@ -106,6 +125,11 @@ public class OauthService {
             if (slu != null) {
                 // 已经绑定
                 logVO.setUser(localUserMapper.selectByPrimaryKey(slu.getLocalUId()));
+                // 存cache信息
+                Pair<String, Timestamp> pair = MD5Utils.TokenUtil(logVO.getUser().getStuId());
+                cache.userTokenCache.putIfAbsent(pair.getLeft(), pair.getRight());
+                // 传回
+                logVO.setToken(pair.getLeft());
             } else {
                 // 未绑定
                 logVO.setSocialUsrId(socialUser.getId());
