@@ -13,6 +13,7 @@ import com.ecnu.six.pethospital.oauth.mapper.SLUMapper;
 import com.ecnu.six.pethospital.oauth.mapper.SocialUserMapper;
 import com.ecnu.six.pethospital.oauth.utils.MD5Utils;
 import com.ecnu.six.pethospital.oauth.utils.Pair;
+import lombok.extern.slf4j.Slf4j;
 import me.zhyd.oauth.model.AuthCallback;
 import me.zhyd.oauth.model.AuthResponse;
 import me.zhyd.oauth.model.AuthUser;
@@ -30,6 +31,7 @@ import java.sql.Timestamp;
  * @since
  */
 @Service
+@Slf4j
 public class OauthService {
 
     @Resource
@@ -83,16 +85,17 @@ public class OauthService {
                     user.setLocation(socialUser.getLocation());
                     user.setNickName(socialUser.getNickName());
                     user.setUserMail(socialUser.getEmail());
-                    int l_id = localUserMapper.insert(user);
+                    int l_id = localUserMapper.insertSelective(user);
                     SLU slu = new SLU();
                     slu.setLocalUId(l_id);
                     slu.setSocialUId(Integer.valueOf(form.getSocialUsrId()));
                     sluMapper.insert(slu);
                 }
             }else {
-                localUserMapper.insert(user);
+                localUserMapper.insertSelective(user);
             }
         }catch (Exception e) {
+            log.error("OauthService -> saveOne", e);
             return false;
         }
         return true;
