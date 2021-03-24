@@ -1,5 +1,6 @@
 /.idea
 /target
+/src/main/resources/application.yml
 
 ### IntelliJ IDEA ###
 .idea
