@@ -13,7 +13,7 @@ import javax.validation.constraints.NotBlank;
  * @since
  */
 @Data
-@Accessors(fluent = true)
+//@Accessors(fluent = true)
 public class LoginForm {
 
     @NotBlank

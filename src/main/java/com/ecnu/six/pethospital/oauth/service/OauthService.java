@@ -55,7 +55,7 @@ public class OauthService {
     }
 
     public LogVO loginByForm(LoginForm form) {
-        LocalUser user = judgeIfLoginSuccess(form.stuId(), form.pwd());
+        LocalUser user = judgeIfLoginSuccess(form.getStuId(), form.getPwd());
         if (user == null) {
             return null;
         }
@@ -72,11 +72,11 @@ public class OauthService {
     public boolean saveOne(LoginForm form) {
         try {
             LocalUser user = new LocalUser();
-            user.setStuId(form.stuId());
-            user.setPassword(MD5Utils.pwdMd5(form.pwd()));
+            user.setStuId(form.getStuId());
+            user.setPassword(MD5Utils.pwdMd5(form.getPwd()));
             user.setStatus(UserStatusEnum.ACTIVE.getCode()); // 枚举
-            if (StringUtils.hasText(form.socialUsrId())) {
-                SocialUser socialUser = socialUserMapper.selectByPrimaryKey(Integer.valueOf(form.socialUsrId()));
+            if (StringUtils.hasText(form.getSocialUsrId())) {
+                SocialUser socialUser = socialUserMapper.selectByPrimaryKey(Integer.valueOf(form.getSocialUsrId()));
                 if (socialUser != null) {
                     user.setAvatar(socialUser.getAvatar());
                     user.setGender(socialUser.getGender());
@@ -86,7 +86,7 @@ public class OauthService {
                     int l_id = localUserMapper.insert(user);
                     SLU slu = new SLU();
                     slu.setLocalUId(l_id);
-                    slu.setSocialUId(Integer.valueOf(form.socialUsrId()));
+                    slu.setSocialUId(Integer.valueOf(form.getSocialUsrId()));
                     sluMapper.insert(slu);
                 }
             }else {
