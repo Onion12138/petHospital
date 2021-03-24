@@ -7,7 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class PethospitalApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(PethospitalApplication.class, args);
+        SpringApplication springApplication = new SpringApplication(PethospitalApplication.class);
+        springApplication.run(args);
     }
 
 }
