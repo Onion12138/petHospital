@@ -1,6 +1,8 @@
 package com.ecnu.six.pethospital.oauth.annotation;
 
 
+import com.ecnu.six.pethospital.oauth.enums.Role;
+
 import java.lang.annotation.*;
 
 /**
@@ -14,6 +16,11 @@ import java.lang.annotation.*;
 @Documented
 public @interface LoginRequired {
 
-    int role() default 0;
+    /**
+     * 0 是 普通用户 ；1是 管理员
+     * 管理员含括普通用户
+     * @return
+     */
+    Role role() default Role.USER;
 
 }

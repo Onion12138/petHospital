@@ -2,6 +2,7 @@ package com.ecnu.six.pethospital.oauth.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.ecnu.six.pethospital.common.ResponseData;
+import com.ecnu.six.pethospital.oauth.VO.LogVO;
 import com.ecnu.six.pethospital.oauth.entity.LocalUser;
 import com.ecnu.six.pethospital.oauth.form.LoginForm;
 import com.ecnu.six.pethospital.oauth.service.OauthService;
@@ -44,9 +45,9 @@ public class AuthController {
     @PostMapping("/login/normal")
     public ResponseData login(@RequestBody LoginForm loginForm) {
         if (loginForm == null) return ResponseData.fail("请正确传参");
-        LocalUser user = null;
-        if ((user = oauthService.loginByForm(loginForm)) != null) {
-            return ResponseData.success(user);
+        LogVO userVO = null;
+        if ((userVO = oauthService.loginByForm(loginForm)) != null) {
+            return ResponseData.success(userVO);
         }
         return ResponseData.fail("用户名或密码错误");
     }
