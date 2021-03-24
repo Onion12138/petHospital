@@ -1,6 +1,6 @@
 package com.ecnu.six.pethospital.disease.service.impl;
 
-import com.ecnu.six.pethospital.disease.dao.DiseaseDao;
+//import com.ecnu.six.pethospital.disease.dao.DiseaseDao;
 import com.ecnu.six.pethospital.disease.service.DiseaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class DiseaseServiceImpl implements DiseaseService {
-    @Autowired
-    private DiseaseDao diseaseDao;
+//    @Autowired
+//    private DiseaseDao diseaseDao;
 
 
 }

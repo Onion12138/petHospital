@@ -17,7 +17,18 @@ public class ResponseData {
     public static ResponseData success() {
         return new ResponseData(200, "请求成功", null);
     }
+
     public static ResponseData success(Object data) {
         return new ResponseData(200, "请求成功", data);
     }
+
+    public static ResponseData fail(Object data) {
+        return new ResponseData(200, "请求成功", data);
+    }
+
+    public static ResponseData fail(String msg) {
+        return new ResponseData(500, msg, null);
+    }
+
+
 }
