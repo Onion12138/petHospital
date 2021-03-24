@@ -3,8 +3,11 @@ package com.ecnu.six.pethospital.oauth.mapper;
 import com.ecnu.six.pethospital.oauth.entity.LocalUser;
 import com.ecnu.six.pethospital.oauth.entity.LocalUserExample;
 import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+@Mapper
 public interface LocalUserMapper {
     long countByExample(LocalUserExample example);
 

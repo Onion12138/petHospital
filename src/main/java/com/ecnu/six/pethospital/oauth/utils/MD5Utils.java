@@ -1,11 +1,8 @@
 package com.ecnu.six.pethospital.oauth.utils;
 
-import com.sun.tools.javac.util.Pair;
 import org.springframework.util.DigestUtils;
 
 import java.sql.Timestamp;
-import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**

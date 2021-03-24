@@ -3,8 +3,11 @@ package com.ecnu.six.pethospital.oauth.mapper;
 import com.ecnu.six.pethospital.oauth.entity.SLU;
 import com.ecnu.six.pethospital.oauth.entity.SLUExample;
 import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+@Mapper
 public interface SLUMapper {
     long countByExample(SLUExample example);
 

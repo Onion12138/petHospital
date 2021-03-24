@@ -2,10 +2,13 @@ package com.ecnu.six.pethospital.oauth.mapper;
 
 import com.ecnu.six.pethospital.oauth.entity.SocialUser;
 import com.ecnu.six.pethospital.oauth.entity.SocialUserExample;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Mapper
 public interface SocialUserMapper {
     long countByExample(SocialUserExample example);
 

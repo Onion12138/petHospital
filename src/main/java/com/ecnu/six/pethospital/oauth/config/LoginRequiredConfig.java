@@ -37,8 +37,8 @@ public class LoginRequiredConfig {
     public void doAuth(LoginRequired loginRequired) {}
 
 
-    @Around("doAuth(loginRequired)")
-    public Object doAuthJudge(LoginRequired loginRequired, ProceedingJoinPoint pjp) throws Throwable {
+    @Around(value = "doAuth(loginRequired)", argNames = "pjp,loginRequired")
+    public Object doAuthJudge(ProceedingJoinPoint pjp, LoginRequired loginRequired) throws Throwable {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
         String token = request.getHeader("token");

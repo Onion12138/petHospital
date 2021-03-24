@@ -1,5 +1,6 @@
 package com.ecnu.six.pethospital.oauth.service;
 
+import com.alibaba.fastjson.JSON;
 import com.ecnu.six.pethospital.oauth.VO.LogVO;
 import com.ecnu.six.pethospital.oauth.config.CacheConfig;
 import com.ecnu.six.pethospital.oauth.entity.LocalUser;
@@ -11,7 +12,7 @@ import com.ecnu.six.pethospital.oauth.mapper.LocalUserMapper;
 import com.ecnu.six.pethospital.oauth.mapper.SLUMapper;
 import com.ecnu.six.pethospital.oauth.mapper.SocialUserMapper;
 import com.ecnu.six.pethospital.oauth.utils.MD5Utils;
-import com.sun.tools.javac.util.Pair;
+import com.ecnu.six.pethospital.oauth.utils.Pair;
 import me.zhyd.oauth.model.AuthCallback;
 import me.zhyd.oauth.model.AuthResponse;
 import me.zhyd.oauth.model.AuthUser;
@@ -62,9 +63,9 @@ public class OauthService {
         logVO.setUser(user);
         // 搞token
         Pair<String, Timestamp> pair = MD5Utils.TokenUtil(user.getStuId());
-        cache.userTokenCache.putIfAbsent(pair.fst, pair.snd);
+        cache.userTokenCache.putIfAbsent(pair.getLeft(), pair.getRight());
         // 传回
-        logVO.setToken(pair.fst);
+        logVO.setToken(pair.getLeft());
         return logVO;
     }
 
@@ -100,6 +101,7 @@ public class OauthService {
     public LogVO loginByThirdParty(AuthRequest request, AuthCallback callback) {
         AuthResponse response = request.login(callback);
         AuthUser authUser = (AuthUser) response.getData();
+        System.out.println(JSON.toJSONString(authUser));
         String uuid = authUser.getUuid();
         String source = authUser.getSource();
         SocialUser  socialUser = null;
@@ -125,9 +127,9 @@ public class OauthService {
                 logVO.setUser(localUserMapper.selectByPrimaryKey(slu.getLocalUId()));
                 // 存cache信息
                 Pair<String, Timestamp> pair = MD5Utils.TokenUtil(logVO.getUser().getStuId());
-                cache.userTokenCache.putIfAbsent(pair.fst, pair.snd);
+                cache.userTokenCache.putIfAbsent(pair.getLeft(), pair.getRight());
                 // 传回
-                logVO.setToken(pair.fst);
+                logVO.setToken(pair.getLeft());
             } else {
                 // 未绑定
                 logVO.setSocialUsrId(socialUser.getId());
