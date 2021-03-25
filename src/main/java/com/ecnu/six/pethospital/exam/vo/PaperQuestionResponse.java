@@ -1,26 +1,22 @@
-package com.ecnu.six.pethospital.exam.dto;
+package com.ecnu.six.pethospital.exam.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 /**
  * @author HavenTong
- * @date 2021/3/24 下午8:21
+ * @date 2021/3/25 下午7:45
  */
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class QuestionRequest {
+public class PaperQuestionResponse {
     private Integer questionId;
-    private Integer admId;
-    private Integer diseaseId;
     private String stem;
-    private String choice;
+    private String[] choices;
     private String answer;
-    private String keyword;
+    private Integer score;
 }

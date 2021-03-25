@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
  */
 @Mapper
 @Repository
-public interface QuestionAdmDao {
+public interface AdmDao {
     @Select("SELECT * FROM adm WHERE adm_id = #{admId}")
     Adm findAdmById(@Param("admId") int admId);
 }

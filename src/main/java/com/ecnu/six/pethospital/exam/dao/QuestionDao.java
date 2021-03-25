@@ -28,7 +28,7 @@ public interface QuestionDao {
             @Result(property = "disease", column = "disease_id",
                     one = @One(select = "com.ecnu.six.pethospital.exam.dao.QuestionDiseaseDao.findDiseaseById")),
             @Result(property = "adm", column = "adm_id",
-                    one = @One(select = "com.ecnu.six.pethospital.exam.dao.QuestionAdmDao.findAdmById"))
+                    one = @One(select = "com.ecnu.six.pethospital.exam.dao.AdmDao.findAdmById"))
     })
     List<Question> findQuestionByDiseaseId(@Param("diseaseId") int diseaseId);
 
@@ -38,7 +38,7 @@ public interface QuestionDao {
             @Result(property = "disease", column = "disease_id",
                     one = @One(select = "com.ecnu.six.pethospital.exam.dao.QuestionDiseaseDao.findDiseaseById")),
             @Result(property = "adm", column = "adm_id",
-                    one = @One(select = "com.ecnu.six.pethospital.exam.dao.QuestionAdmDao.findAdmById"))
+                    one = @One(select = "com.ecnu.six.pethospital.exam.dao.AdmDao.findAdmById"))
     })
     List<Question> findQuestionByKeyword(@Param("keyword") String keyword);
 
@@ -48,7 +48,7 @@ public interface QuestionDao {
             @Result(property = "disease", column = "disease_id",
                     one = @One(select = "com.ecnu.six.pethospital.exam.dao.QuestionDiseaseDao.findDiseaseById")),
             @Result(property = "adm", column = "adm_id",
-                    one = @One(select = "com.ecnu.six.pethospital.exam.dao.QuestionAdmDao.findAdmById"))
+                    one = @One(select = "com.ecnu.six.pethospital.exam.dao.AdmDao.findAdmById"))
     })
     Question findQuestionById(@Param("questionId") int questionId);
 
@@ -58,7 +58,7 @@ public interface QuestionDao {
             @Result(property = "disease", column = "disease_id",
                     one = @One(select = "com.ecnu.six.pethospital.exam.dao.QuestionDiseaseDao.findDiseaseById")),
             @Result(property = "adm", column = "adm_id",
-                    one = @One(select = "com.ecnu.six.pethospital.exam.dao.QuestionAdmDao.findAdmById"))
+                    one = @One(select = "com.ecnu.six.pethospital.exam.dao.AdmDao.findAdmById"))
     })
     List<Question> findAll();
 

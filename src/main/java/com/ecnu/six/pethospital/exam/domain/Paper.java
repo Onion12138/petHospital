@@ -1,16 +1,24 @@
 package com.ecnu.six.pethospital.exam.domain;
 
+import com.ecnu.six.pethospital.oauth.entity.Adm;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @author HavenTong
  * @date 2021/3/24 上午10:52
  */
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Paper {
     private Integer paperId;
     private String paperName;
@@ -25,4 +33,6 @@ public class Paper {
     @JsonFormat(pattern = "yyyy-MM-dd")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDateTime paperUpdatedTime;
+
+    private Adm adm;
 }
