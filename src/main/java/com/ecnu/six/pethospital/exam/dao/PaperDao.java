@@ -35,4 +35,6 @@ public interface PaperDao {
     })
     List<Paper> findAll();
 
+    @Select("SELECT * FROM paper WHERE paper_id = #{paperId} AND is_deleted = FALSE")
+    Paper findPaperById(int paperId);
 }
