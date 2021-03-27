@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 @MapperScan({"com.ecnu.six.pethospital.oauth.mapper"})
+@MapperScan({"com.ecnu.six.pethospital.exam.dao"})
 public class PethospitalApplication {
 
     public static void main(String[] args) {
