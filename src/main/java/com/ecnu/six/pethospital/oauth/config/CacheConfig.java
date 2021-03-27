@@ -37,7 +37,11 @@ public class CacheConfig {
                 try {
                     Thread.sleep(24 * 3600 * 100);
                 } catch (Exception e) {
-                    log.error("CacheConfig -> EXECUTOR_SERVICE interrupted", e);
+                    if (e instanceof InterruptedException) {
+                        // ignore
+                    }else {
+                        log.error("CacheConfig -> EXECUTOR_SERVICE exception", e);
+                    }
                     break;
                 }
                 log.info("当前清理数量为 {}", adminToken.size());
@@ -85,8 +89,10 @@ public class CacheConfig {
          */
         @Override
         public void run() {
+            log.info("shutdown cache ====>");
             _hook = null;
             _cache.ShotDown();
+            log.info("<==== cache shutdown completely");
         }
     }
 }

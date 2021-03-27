@@ -1,7 +1,9 @@
 package com.ecnu.six.pethospital.oauth.controller;
 
 import com.ecnu.six.pethospital.common.ResponseData;
+import com.ecnu.six.pethospital.oauth.VO.AdminLogVO;
 import com.ecnu.six.pethospital.oauth.VO.UserLogVO;
+import com.ecnu.six.pethospital.oauth.form.AdminLoginForm;
 import com.ecnu.six.pethospital.oauth.form.UserLoginForm;
 import com.ecnu.six.pethospital.oauth.service.OauthService;
 import com.xkcoding.justauth.AuthRequestFactory;
@@ -69,6 +71,15 @@ public class AuthController {
         return ResponseData.success(oauthService.loginByThirdParty(factory.get(type), callback));
     }
 
+    @PostMapping("/admin/login/normal")
+    public ResponseData admLogin(@RequestBody AdminLoginForm adminLoginForm) {
+        if (adminLoginForm == null) return ResponseData.fail("请正确传参");
+        AdminLogVO adminVO = null;
+        if ((adminVO = oauthService.AmdLogin(adminLoginForm)) != null) {
+            return ResponseData.success(adminVO);
+        }
+        return ResponseData.fail("用户名或密码错误");
+    }
 
 
 }
