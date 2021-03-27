@@ -59,9 +59,9 @@ public class AuthController {
 
     // 三方登录入口接口
     @GetMapping("/login/{type}")
-    public String login(@PathVariable String type, HttpServletResponse response) throws IOException {
+    public ResponseData login(@PathVariable String type, HttpServletResponse response) throws IOException {
         AuthRequest authRequest = factory.get(type);
-        return authRequest.authorize(AuthStateUtils.createState());
+        return ResponseData.success(authRequest.authorize(AuthStateUtils.createState()));
 //        response.sendRedirect(authRequest.authorize(AuthStateUtils.createState()));
     }
 
