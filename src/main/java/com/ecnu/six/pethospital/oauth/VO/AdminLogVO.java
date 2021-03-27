@@ -1,7 +1,8 @@
 package com.ecnu.six.pethospital.oauth.VO;
 
-import com.ecnu.six.pethospital.oauth.entity.LocalUser;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @author LEO D PEN
@@ -10,11 +11,11 @@ import lombok.Data;
  * @since
  */
 @Data
-public class LogVO {
+@AllArgsConstructor
+@NoArgsConstructor
+public class AdminLogVO {
 
-    private LocalUser user;
-
-    private Integer socialUsrId;
+    private String name;
 
     private String token;
 

@@ -1,16 +1,12 @@
 package com.ecnu.six.pethospital.oauth.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.ecnu.six.pethospital.common.ResponseData;
-import com.ecnu.six.pethospital.oauth.VO.LogVO;
-import com.ecnu.six.pethospital.oauth.entity.LocalUser;
-import com.ecnu.six.pethospital.oauth.form.LoginForm;
+import com.ecnu.six.pethospital.oauth.VO.UserLogVO;
+import com.ecnu.six.pethospital.oauth.form.UserLoginForm;
 import com.ecnu.six.pethospital.oauth.service.OauthService;
 import com.xkcoding.justauth.AuthRequestFactory;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import me.zhyd.oauth.model.AuthCallback;
-import me.zhyd.oauth.model.AuthResponse;
 import me.zhyd.oauth.request.AuthRequest;
 import me.zhyd.oauth.utils.AuthStateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,10 +39,10 @@ public class AuthController {
 
     // 直接登录
     @PostMapping("/login/normal")
-    public ResponseData login(@RequestBody LoginForm loginForm) {
-        if (loginForm == null) return ResponseData.fail("请正确传参");
-        LogVO userVO = null;
-        if ((userVO = oauthService.loginByForm(loginForm)) != null) {
+    public ResponseData login(@RequestBody UserLoginForm userLoginForm) {
+        if (userLoginForm == null) return ResponseData.fail("请正确传参");
+        UserLogVO userVO = null;
+        if ((userVO = oauthService.loginByForm(userLoginForm)) != null) {
             return ResponseData.success(userVO);
         }
         return ResponseData.fail("用户名或密码错误");
@@ -54,9 +50,9 @@ public class AuthController {
 
     // 注册通用
     @PostMapping("/register/all")
-    public ResponseData register(@RequestBody LoginForm loginForm) {
-        if (loginForm == null) return ResponseData.fail("请正确传参");
-        return ResponseData.success(oauthService.saveOne(loginForm));
+    public ResponseData register(@RequestBody UserLoginForm userLoginForm) {
+        if (userLoginForm == null) return ResponseData.fail("请正确传参");
+        return ResponseData.success(oauthService.saveOne(userLoginForm));
     }
 
     // 三方登录入口接口

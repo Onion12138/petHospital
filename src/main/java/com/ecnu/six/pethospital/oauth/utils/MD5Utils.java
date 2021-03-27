@@ -19,9 +19,9 @@ public class MD5Utils {
         return DigestUtils.md5DigestAsHex((SALT + original).getBytes());
     }
 
-    public static Pair<String, Timestamp> TokenUtil(String stuId) {
+    public static Pair<String, Timestamp> TokenUtil(String uniqueStr) {
         Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now().plusDays(1));
-        String token = pwdMd5(stuId);
+        String token = pwdMd5(uniqueStr);
         return Pair.of(token, timestamp);
     }
 
