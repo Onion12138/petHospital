@@ -43,7 +43,7 @@ public class LoginRequiredConfig {
         HttpServletRequest request = attributes.getRequest();
         String token = request.getHeader("token");
         String stuId = request.getParameter("stuId");
-        if (!MD5Utils.pwdMd5(stuId).equals(token)) {
+        if (stuId != null && !MD5Utils.pwdMd5(stuId).equals(token)) {
             // 大概率是一些用户改个人信息的操作，或者获取用户具体信息的操作
             return ResponseData.fail("token 无效");
         }
