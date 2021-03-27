@@ -12,6 +12,7 @@ import me.zhyd.oauth.model.AuthCallback;
 import me.zhyd.oauth.request.AuthRequest;
 import me.zhyd.oauth.utils.AuthStateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -32,6 +33,10 @@ public class AuthController {
     private final AuthRequestFactory factory;
 
     private final OauthService oauthService;
+
+    private static final String FIRST = "http://localhost:9527/#/register?socialUsrId=";
+
+    private static final String NOT_FIRST = "http://localhost:9527/#/login?stuId=";
 
     // 测试使用
     @GetMapping
@@ -67,8 +72,19 @@ public class AuthController {
 
 
     @RequestMapping("/{type}/callback")
-    public ResponseData login(@PathVariable String type, AuthCallback callback) {
-        return ResponseData.success(oauthService.loginByThirdParty(factory.get(type), callback));
+    public void login(@PathVariable String type, AuthCallback callback, HttpServletResponse response) throws IOException {
+        UserLogVO userLogVO = oauthService.loginByThirdParty(factory.get(type), callback);
+        StringBuilder redUrl = new StringBuilder();
+        if (userLogVO.getSocialUsrId() != null) {
+            redUrl.append(FIRST).append(userLogVO.getSocialUsrId());
+        }else {
+            redUrl.append(NOT_FIRST)
+                    .append(userLogVO.getUser().getStuId())
+                    .append("&")
+                    .append("token=")
+                    .append(userLogVO.getToken());
+        }
+        response.sendRedirect(redUrl.toString());
     }
 
     @PostMapping("/admin/login/normal")
