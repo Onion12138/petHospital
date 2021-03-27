@@ -59,13 +59,13 @@ public class AuthController {
 
     // 三方登录入口接口
     @GetMapping("/login/{type}")
-    public void login(@PathVariable String type, HttpServletResponse response) throws IOException {
+    public String login(@PathVariable String type, HttpServletResponse response) throws IOException {
         AuthRequest authRequest = factory.get(type);
-        response.sendRedirect(authRequest.authorize(AuthStateUtils.createState()));
+        return authRequest.authorize(AuthStateUtils.createState());
+//        response.sendRedirect(authRequest.authorize(AuthStateUtils.createState()));
     }
 
 
-    // 前端别接这个接口，不暴露它
     @RequestMapping("/{type}/callback")
     public ResponseData login(@PathVariable String type, AuthCallback callback) {
         return ResponseData.success(oauthService.loginByThirdParty(factory.get(type), callback));
