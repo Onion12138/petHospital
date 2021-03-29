@@ -63,7 +63,7 @@ public class AuthController {
         if (oauthService.checkIfAvailable(stuId)) {
             return ResponseData.success(true);
         }
-        return ResponseData.fail("已有改学号信息");
+        return ResponseData.success(false);
     }
 
     // 注册通用
