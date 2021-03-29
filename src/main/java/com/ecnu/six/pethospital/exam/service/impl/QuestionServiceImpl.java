@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**
@@ -42,8 +41,8 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public List<QuestionResponse> findQuestionByDiseaseId(QuestionRequest questionRequest) {
-        List<Question> questions = questionDao.findQuestionByDiseaseId(questionRequest.getDiseaseId());
+    public List<QuestionResponse> findQuestionsByDiseaseId(QuestionRequest questionRequest) {
+        List<Question> questions = questionDao.findQuestionsByDiseaseId(questionRequest.getDiseaseId());
         List<QuestionResponse> questionResponses = new LinkedList<>();
         for (Question question : questions) {
             questionResponses.add(QuestionResponse.fromQuestion(question));
@@ -52,8 +51,8 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public List<QuestionResponse> findQuestionByKeyword(QuestionRequest questionRequest) {
-        List<Question> questions = questionDao.findQuestionByKeyword("%" + questionRequest.getKeyword() + "%");
+    public List<QuestionResponse> findQuestionsByKeyword(QuestionRequest questionRequest) {
+        List<Question> questions = questionDao.findQuestionsByKeyword("%" + questionRequest.getKeyword() + "%");
         List<QuestionResponse> questionResponses = new LinkedList<>();
         for (Question question : questions) {
             questionResponses.add(QuestionResponse.fromQuestion(question));

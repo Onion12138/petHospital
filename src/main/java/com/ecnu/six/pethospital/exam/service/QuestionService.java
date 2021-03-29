@@ -18,9 +18,9 @@ public interface QuestionService {
 
     void deleteQuestionById(QuestionRequest questionRequest);
 
-    List<QuestionResponse> findQuestionByDiseaseId(QuestionRequest questionRequest);
+    List<QuestionResponse> findQuestionsByDiseaseId(QuestionRequest questionRequest);
 
-    List<QuestionResponse> findQuestionByKeyword(QuestionRequest questionRequest);
+    List<QuestionResponse> findQuestionsByKeyword(QuestionRequest questionRequest);
 
     QuestionResponse findQuestionById(QuestionRequest questionRequest);
 

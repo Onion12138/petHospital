@@ -1,7 +1,6 @@
 package com.ecnu.six.pethospital.exam.controller;
 
 import com.ecnu.six.pethospital.common.ResponseData;
-import com.ecnu.six.pethospital.exam.domain.Question;
 import com.ecnu.six.pethospital.exam.dto.QuestionRequest;
 import com.ecnu.six.pethospital.exam.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,12 +33,12 @@ public class QuestionController {
 
     @PostMapping("/findQuestionByDiseaseId")
     public ResponseData findQuestionByDiseaseId(@RequestBody QuestionRequest questionRequest) {
-        return ResponseData.success(questionService.findQuestionByDiseaseId(questionRequest));
+        return ResponseData.success(questionService.findQuestionsByDiseaseId(questionRequest));
     }
 
     @PostMapping("/findQuestionByKeyword")
     public ResponseData findQuestionByKeyword(@RequestBody QuestionRequest questionRequest) {
-        return ResponseData.success(questionService.findQuestionByKeyword(questionRequest));
+        return ResponseData.success(questionService.findQuestionsByKeyword(questionRequest));
     }
 
     @PostMapping("/findQuestionById")

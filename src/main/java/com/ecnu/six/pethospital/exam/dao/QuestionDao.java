@@ -30,7 +30,7 @@ public interface QuestionDao {
             @Result(property = "adm", column = "adm_id",
                     one = @One(select = "com.ecnu.six.pethospital.exam.dao.AdmDao.findAdmById"))
     })
-    List<Question> findQuestionByDiseaseId(@Param("diseaseId") int diseaseId);
+    List<Question> findQuestionsByDiseaseId(@Param("diseaseId") int diseaseId);
 
 
     @Select("SELECT * FROM question WHERE is_deleted = FALSE AND (stem LIKE #{keyword} OR choice LIKE #{keyword})")
@@ -40,7 +40,7 @@ public interface QuestionDao {
             @Result(property = "adm", column = "adm_id",
                     one = @One(select = "com.ecnu.six.pethospital.exam.dao.AdmDao.findAdmById"))
     })
-    List<Question> findQuestionByKeyword(@Param("keyword") String keyword);
+    List<Question> findQuestionsByKeyword(@Param("keyword") String keyword);
 
 
     @Select("SELECT * FROM question WHERE question_id = #{questionId}")
