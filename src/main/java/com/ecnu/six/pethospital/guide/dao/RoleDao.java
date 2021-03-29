@@ -6,6 +6,8 @@ import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
  * @author YueChen
  * @version 1.0
@@ -16,4 +18,7 @@ import org.apache.ibatis.annotations.Mapper;
 public interface RoleDao {
     @Select("SELECT * FROM role WHERE id = #{id}")
     Role findRoleById(@Param("id") int id);
+
+    @Select("SELECT * FORM role")
+    List<Role> findAll();
 }

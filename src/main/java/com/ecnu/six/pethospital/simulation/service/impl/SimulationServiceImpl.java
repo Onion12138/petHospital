@@ -1,10 +1,10 @@
 package com.ecnu.six.pethospital.simulation.service.impl;
 
 import com.ecnu.six.pethospital.simulation.dao.ProcessDao;
-import com.ecnu.six.pethospital.simulation.dao.RoleDao;
+import com.ecnu.six.pethospital.guide.dao.RoleDao;
 import com.ecnu.six.pethospital.simulation.dao.StepDao;
 import com.ecnu.six.pethospital.simulation.domain.Process;
-import com.ecnu.six.pethospital.simulation.domain.Role;
+import com.ecnu.six.pethospital.guide.domain.Role;
 import com.ecnu.six.pethospital.simulation.domain.Step;
 import com.ecnu.six.pethospital.simulation.dto.ProcessRequest;
 import com.ecnu.six.pethospital.simulation.dto.StepRequest;
