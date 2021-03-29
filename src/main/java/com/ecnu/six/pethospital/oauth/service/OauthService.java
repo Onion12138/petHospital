@@ -7,6 +7,7 @@ import com.ecnu.six.pethospital.oauth.config.CacheConfig;
 import com.ecnu.six.pethospital.oauth.entity.*;
 import com.ecnu.six.pethospital.oauth.enums.UserStatusEnum;
 import com.ecnu.six.pethospital.oauth.form.AdminLoginForm;
+import com.ecnu.six.pethospital.oauth.form.AppSocialUsrForm;
 import com.ecnu.six.pethospital.oauth.form.UserLoginForm;
 import com.ecnu.six.pethospital.oauth.mapper.AdmMapper;
 import com.ecnu.six.pethospital.oauth.mapper.LocalUserMapper;
@@ -191,6 +192,23 @@ public class OauthService {
         return result;
     }
 
+    public SocialUser saveSocialUser(AppSocialUsrForm form) {
+        SocialUser socialUser;
+        socialUser = socialUserMapper.selectByUuidAndSource(form.getUuid(), form.getSource());
+
+        if (socialUser == null) {
+            socialUser = new SocialUser(form);
+        } else {
+            return socialUser;
+        }
+        try {
+            socialUserMapper.insertSelective(socialUser);
+        } catch (Exception e) {
+            // 说明已经有了
+            socialUser = socialUserMapper.selectByUuidAndSource(form.getUuid(), form.getSource());
+        }
+        return socialUser;
+    }
     /**
      * stuId是否可用
      * @param stuId
