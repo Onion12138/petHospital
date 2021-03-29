@@ -1,6 +1,9 @@
 package com.ecnu.six.pethospital.disease.domain;
 
 import lombok.Data;
+import org.springframework.data.annotation.Id;
+
+import javax.persistence.GeneratedValue;
 
 /**
  * @author onion
@@ -8,6 +11,8 @@ import lombok.Data;
  */
 @Data
 public class Disease {
+    @Id
+    @GeneratedValue
     private Long diseaseId;
     private String name;
     private Long parent;
