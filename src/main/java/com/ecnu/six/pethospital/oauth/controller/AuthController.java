@@ -55,6 +55,15 @@ public class AuthController {
         return ResponseData.fail("用户名或密码错误");
     }
 
+    // 学号是否已有
+    @GetMapping("/login/check")
+    public ResponseData check(@RequestParam("stuId") String stuId) {
+        if (oauthService.checkIfAvailable(stuId)) {
+            return ResponseData.success(true);
+        }
+        return ResponseData.fail("已有改学号信息");
+    }
+
     // 注册通用
     @PostMapping("/register/all")
     public ResponseData register(@RequestBody UserLoginForm userLoginForm) {

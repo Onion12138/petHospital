@@ -191,4 +191,17 @@ public class OauthService {
         return result;
     }
 
+    /**
+     * stuId是否可用
+     * @param stuId
+     * @return
+     */
+    public boolean checkIfAvailable(String stuId) {
+        if (!StringUtils.hasText(stuId)) {
+            return false;
+        }
+        LocalUser user = localUserMapper.selectByStuId(stuId);
+        return user == null || user.getId() == null;
+    }
+
 }
