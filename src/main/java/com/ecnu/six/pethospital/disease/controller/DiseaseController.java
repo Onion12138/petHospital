@@ -4,10 +4,7 @@ import com.ecnu.six.pethospital.common.ResponseData;
 import com.ecnu.six.pethospital.disease.service.DiseaseService;
 import com.ecnu.six.pethospital.disease.vo.DiseaseVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -15,7 +12,8 @@ import java.util.List;
  * @author onion
  * @date 2021/3/22 -8:15 上午
  */
-@RestController("/disease")
+@RestController
+@RequestMapping("/disease")
 public class DiseaseController {
     @Autowired
     private DiseaseService diseaseService;
