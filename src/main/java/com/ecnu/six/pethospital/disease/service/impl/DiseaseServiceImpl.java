@@ -31,8 +31,8 @@ public class DiseaseServiceImpl implements DiseaseService {
                 diseaseVO.setName(disease.getName());
                 diseaseVO.setChildren(diseaseList.stream().filter(e->e.getParent().equals(disease.getDiseaseId()))
                         .map(this::transformVO).collect(Collectors.toList()));
+                diseaseVOList.add(diseaseVO);
             }
-            diseaseVOList.add(diseaseVO);
         }
         return diseaseVOList;
     }
