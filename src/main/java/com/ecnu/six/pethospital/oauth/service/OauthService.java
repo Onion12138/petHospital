@@ -105,7 +105,8 @@ public class OauthService {
                     user.setLocation(socialUser.getLocation());
                     user.setNickName(socialUser.getNickName());
                     user.setUserMail(socialUser.getEmail());
-                    int l_id = localUserMapper.insertSelective(user);
+                    localUserMapper.insertSelective(user);
+                    int l_id = user.getId();
                     SLU slu = new SLU();
                     slu.setLocalUId(l_id);
                     slu.setSocialUId(Integer.valueOf(form.getSocialUsrId()));
@@ -147,7 +148,8 @@ public class OauthService {
                     .source(source)
                     .accessToken(authUser.getToken().getAccessToken())
                     .build();
-            userLogVO.setSocialUsrId(socialUserMapper.insert(socialUser));
+            socialUserMapper.insert(socialUser);
+            userLogVO.setSocialUsrId(socialUser.getId());
         } else {
             // 存在则查一下是否已经绑定
             SLU slu = sluMapper.selectBySID(socialUser.getId());
