@@ -2,6 +2,7 @@ package com.ecnu.six.pethospital.disease.controller;
 
 import com.ecnu.six.pethospital.common.ResponseData;
 import com.ecnu.six.pethospital.disease.domain.Caze;
+import com.ecnu.six.pethospital.disease.dto.CaseDTO;
 import com.ecnu.six.pethospital.disease.service.impl.CazeServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -33,13 +34,13 @@ public class CaseController {
         return ResponseData.success();
     }
     @PostMapping("/addOne")
-    public ResponseData addOne(@RequestBody Caze caze) {
-        caseService.addOne(caze);
+    public ResponseData addOne(@RequestBody CaseDTO caseDTO) {
+        caseService.addOne(caseDTO);
         return ResponseData.success();
     }
     @PostMapping("/updateOne")
-    public ResponseData updateOne(@RequestBody Caze caze) {
-        caseService.updateOne(caze);
+    public ResponseData updateOne(@RequestBody CaseDTO caseDTO) {
+        caseService.updateOne(caseDTO);
         return ResponseData.success();
     }
 }

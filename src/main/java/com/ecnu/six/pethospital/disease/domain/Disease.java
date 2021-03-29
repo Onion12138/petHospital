@@ -2,10 +2,7 @@ package com.ecnu.six.pethospital.disease.domain;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * @author onion
@@ -15,7 +12,7 @@ import javax.persistence.Id;
 @Entity
 public class Disease {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long diseaseId;
 
     @Column

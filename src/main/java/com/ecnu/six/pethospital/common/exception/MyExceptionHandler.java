@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class MyExceptionHandler {
     @ExceptionHandler
-    public ResponseData runtimeExceptionHandler(RuntimeException e) {
+    public ResponseData runtimeExceptionHandler(Exception e) {
         return new ResponseData(-1, e.getLocalizedMessage(), null);
     }
 }

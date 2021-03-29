@@ -28,11 +28,10 @@ public class DiseaseServiceImpl implements DiseaseService {
             DiseaseVO diseaseVO = new DiseaseVO();
             if (disease.getParent() == -1) {
                 diseaseVO.setDiseaseId(disease.getDiseaseId());
-                diseaseVO.setName(diseaseVO.getName());
+                diseaseVO.setName(disease.getName());
                 diseaseVO.setChildren(diseaseList.stream().filter(e->e.getParent().equals(disease.getDiseaseId()))
                         .map(this::transformVO).collect(Collectors.toList()));
             }
-            diseaseVO.setName(disease.getName());
             diseaseVOList.add(diseaseVO);
         }
         return diseaseVOList;

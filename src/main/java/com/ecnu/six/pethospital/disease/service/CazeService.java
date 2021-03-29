@@ -1,6 +1,7 @@
 package com.ecnu.six.pethospital.disease.service;
 
 import com.ecnu.six.pethospital.disease.domain.Caze;
+import com.ecnu.six.pethospital.disease.dto.CaseDTO;
 import org.springframework.data.domain.Page;
 
 /**
@@ -14,5 +15,7 @@ public interface CazeService {
 
     void deleteOne(Long caseId);
 
-    void addOne(Caze caze);
+    void addOne(CaseDTO caseDTO);
+
+    void updateOne(CaseDTO caseDTO);
 }
