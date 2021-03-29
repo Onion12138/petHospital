@@ -10,4 +10,10 @@ import java.util.List;
  */
 public interface DiseaseService {
     List<DiseaseVO> findAll();
+
+    void addOne(String name, Long parent);
+
+    void updateOne(Long diseaseId, String name, Long parent);
+
+    void deleteOne(Long diseaseId);
 }

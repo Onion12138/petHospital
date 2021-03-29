@@ -35,6 +35,29 @@ public class DiseaseServiceImpl implements DiseaseService {
         }
         return diseaseVOList;
     }
+
+    @Override
+    public void addOne(String name, Long parent) {
+        Disease disease = new Disease();
+        disease.setName(name);
+        disease.setParent(parent);
+        diseaseDao.save(disease);
+    }
+
+    @Override
+    public void updateOne(Long diseaseId, String name, Long parent) {
+        Disease disease = new Disease();
+        disease.setDiseaseId(diseaseId);
+        disease.setName(name);
+        disease.setParent(parent);
+        diseaseDao.save(disease);
+    }
+
+    @Override
+    public void deleteOne(Long diseaseId) {
+        diseaseDao.deleteById(diseaseId);
+    }
+
     private DiseaseVO transformVO(Disease disease) {
         return new DiseaseVO(disease.getDiseaseId(), disease.getName(), null);
     }
