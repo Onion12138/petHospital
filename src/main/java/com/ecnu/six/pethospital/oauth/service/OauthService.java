@@ -1,13 +1,14 @@
 package com.ecnu.six.pethospital.oauth.service;
 
 import com.alibaba.fastjson.JSON;
-import com.ecnu.six.pethospital.oauth.VO.LogVO;
+import com.ecnu.six.pethospital.oauth.VO.AdminLogVO;
+import com.ecnu.six.pethospital.oauth.VO.UserLogVO;
 import com.ecnu.six.pethospital.oauth.config.CacheConfig;
-import com.ecnu.six.pethospital.oauth.entity.LocalUser;
-import com.ecnu.six.pethospital.oauth.entity.SLU;
-import com.ecnu.six.pethospital.oauth.entity.SocialUser;
+import com.ecnu.six.pethospital.oauth.entity.*;
 import com.ecnu.six.pethospital.oauth.enums.UserStatusEnum;
-import com.ecnu.six.pethospital.oauth.form.LoginForm;
+import com.ecnu.six.pethospital.oauth.form.AdminLoginForm;
+import com.ecnu.six.pethospital.oauth.form.UserLoginForm;
+import com.ecnu.six.pethospital.oauth.mapper.AdmMapper;
 import com.ecnu.six.pethospital.oauth.mapper.LocalUserMapper;
 import com.ecnu.six.pethospital.oauth.mapper.SLUMapper;
 import com.ecnu.six.pethospital.oauth.mapper.SocialUserMapper;
@@ -23,6 +24,7 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * @author LEO D PEN
@@ -44,10 +46,18 @@ public class OauthService {
     private SocialUserMapper socialUserMapper;
 
     @Resource
+    private AdmMapper admMapper;
+
+    @Resource
     private CacheConfig cache;
 
 
-    // 我不管了我透传了
+    /**
+     * 检测用户是否存在【普通登录】
+     * @param stuId
+     * @param pwd
+     * @return
+     */
     private LocalUser judgeIfLoginSuccess(String stuId, String pwd) {
         LocalUser user = localUserMapper.selectByStuId(stuId);
         if (user != null && user.getPassword().equals(MD5Utils.pwdMd5(pwd))) {
@@ -56,22 +66,32 @@ public class OauthService {
         return null;
     }
 
-    public LogVO loginByForm(LoginForm form) {
+    /**
+     * 普通用户普通登录入口【学号+密码】
+     * @param form
+     * @return
+     */
+    public UserLogVO loginByForm(UserLoginForm form) {
         LocalUser user = judgeIfLoginSuccess(form.getStuId(), form.getPwd());
         if (user == null) {
             return null;
         }
-        LogVO logVO = new LogVO();
-        logVO.setUser(user);
+        UserLogVO userLogVO = new UserLogVO();
+        userLogVO.setUser(user);
         // 搞token
         Pair<String, Timestamp> pair = MD5Utils.TokenUtil(user.getStuId());
         cache.userTokenCache.putIfAbsent(pair.getLeft(), pair.getRight());
         // 传回
-        logVO.setToken(pair.getLeft());
-        return logVO;
+        userLogVO.setToken(pair.getLeft());
+        return userLogVO;
     }
 
-    public boolean saveOne(LoginForm form) {
+    /**
+     * save User
+     * @param form
+     * @return
+     */
+    public boolean saveOne(UserLoginForm form) {
         try {
             LocalUser user = new LocalUser();
             user.setStuId(form.getStuId());
@@ -101,14 +121,20 @@ public class OauthService {
         return true;
     }
 
-    public LogVO loginByThirdParty(AuthRequest request, AuthCallback callback) {
+    /**
+     * 普通用户三方登录入口
+     * @param request
+     * @param callback
+     * @return
+     */
+    public UserLogVO loginByThirdParty(AuthRequest request, AuthCallback callback) {
         AuthResponse response = request.login(callback);
         AuthUser authUser = (AuthUser) response.getData();
         System.out.println(JSON.toJSONString(authUser));
         String uuid = authUser.getUuid();
         String source = authUser.getSource();
         SocialUser  socialUser = null;
-        LogVO logVO = new LogVO();
+        UserLogVO userLogVO = new UserLogVO();
         if ((socialUser = socialUserMapper.selectByUuidAndSource(uuid, source)) == null) {
             // 存入
             socialUser = SocialUser.builder()
@@ -121,29 +147,46 @@ public class OauthService {
                     .source(source)
                     .accessToken(authUser.getToken().getAccessToken())
                     .build();
-            logVO.setSocialUsrId(socialUserMapper.insert(socialUser));
+            userLogVO.setSocialUsrId(socialUserMapper.insert(socialUser));
         } else {
             // 存在则查一下是否已经绑定
             SLU slu = sluMapper.selectBySID(socialUser.getId());
             if (slu != null) {
                 // 已经绑定
-                logVO.setUser(localUserMapper.selectByPrimaryKey(slu.getLocalUId()));
+                userLogVO.setUser(localUserMapper.selectByPrimaryKey(slu.getLocalUId()));
                 // 存cache信息
-                Pair<String, Timestamp> pair = MD5Utils.TokenUtil(logVO.getUser().getStuId());
+                Pair<String, Timestamp> pair = MD5Utils.TokenUtil(userLogVO.getUser().getStuId());
                 cache.userTokenCache.putIfAbsent(pair.getLeft(), pair.getRight());
                 // 传回
-                logVO.setToken(pair.getLeft());
+                userLogVO.setToken(pair.getLeft());
             } else {
                 // 未绑定
-                logVO.setSocialUsrId(socialUser.getId());
+                userLogVO.setSocialUsrId(socialUser.getId());
             }
         }
-        return logVO;
+        return userLogVO;
     }
 
 
+    public AdminLogVO AmdLogin(AdminLoginForm form) {
+        AdminLogVO result = new AdminLogVO();
+        if (form == null) return result;
+        AdmExample example = new AdmExample();
+        example.createCriteria().andAdmNameEqualTo(form.getAdmName());
+        List<Adm> res = admMapper.selectByExample(example);
+        if (res.size() > 1) {
+            log.error("OauthService -> AmdLogin, more than one adm, name : {}", form.getAdmName());
+        }
+        Adm adm = res.get(0);
+        if (!adm.getPassword().equals(form.getPwd())) {
+            return result;
+        }
+        Pair<String, Timestamp> pair = MD5Utils.TokenUtil(adm.getAdmName());
+        cache.adminToken.add(pair.getLeft());
 
-
-
+        result.setName(adm.getAdmName());
+        result.setToken(pair.getLeft());
+        return result;
+    }
 
 }

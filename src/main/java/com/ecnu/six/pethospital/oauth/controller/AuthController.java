@@ -1,19 +1,18 @@
 package com.ecnu.six.pethospital.oauth.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.ecnu.six.pethospital.common.ResponseData;
-import com.ecnu.six.pethospital.oauth.VO.LogVO;
-import com.ecnu.six.pethospital.oauth.entity.LocalUser;
-import com.ecnu.six.pethospital.oauth.form.LoginForm;
+import com.ecnu.six.pethospital.oauth.VO.AdminLogVO;
+import com.ecnu.six.pethospital.oauth.VO.UserLogVO;
+import com.ecnu.six.pethospital.oauth.form.AdminLoginForm;
+import com.ecnu.six.pethospital.oauth.form.UserLoginForm;
 import com.ecnu.six.pethospital.oauth.service.OauthService;
 import com.xkcoding.justauth.AuthRequestFactory;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import me.zhyd.oauth.model.AuthCallback;
-import me.zhyd.oauth.model.AuthResponse;
 import me.zhyd.oauth.request.AuthRequest;
 import me.zhyd.oauth.utils.AuthStateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -35,6 +34,10 @@ public class AuthController {
 
     private final OauthService oauthService;
 
+    private static final String FIRST = "http://localhost:9527/#/register?socialUsrId=";
+
+    private static final String NOT_FIRST = "http://localhost:9527/#/login?stuId=";
+
     // 测试使用
     @GetMapping
     public List<String> list() {
@@ -43,10 +46,10 @@ public class AuthController {
 
     // 直接登录
     @PostMapping("/login/normal")
-    public ResponseData login(@RequestBody LoginForm loginForm) {
-        if (loginForm == null) return ResponseData.fail("请正确传参");
-        LogVO userVO = null;
-        if ((userVO = oauthService.loginByForm(loginForm)) != null) {
+    public ResponseData login(@RequestBody UserLoginForm userLoginForm) {
+        if (userLoginForm == null) return ResponseData.fail("请正确传参");
+        UserLogVO userVO = null;
+        if ((userVO = oauthService.loginByForm(userLoginForm)) != null) {
             return ResponseData.success(userVO);
         }
         return ResponseData.fail("用户名或密码错误");
@@ -54,25 +57,45 @@ public class AuthController {
 
     // 注册通用
     @PostMapping("/register/all")
-    public ResponseData register(@RequestBody LoginForm loginForm) {
-        if (loginForm == null) return ResponseData.fail("请正确传参");
-        return ResponseData.success(oauthService.saveOne(loginForm));
+    public ResponseData register(@RequestBody UserLoginForm userLoginForm) {
+        if (userLoginForm == null) return ResponseData.fail("请正确传参");
+        return ResponseData.success(oauthService.saveOne(userLoginForm));
     }
 
     // 三方登录入口接口
     @GetMapping("/login/{type}")
-    public void login(@PathVariable String type, HttpServletResponse response) throws IOException {
+    public ResponseData login(@PathVariable String type, HttpServletResponse response) throws IOException {
         AuthRequest authRequest = factory.get(type);
-        response.sendRedirect(authRequest.authorize(AuthStateUtils.createState()));
+        return ResponseData.success(authRequest.authorize(AuthStateUtils.createState()));
+//        response.sendRedirect(authRequest.authorize(AuthStateUtils.createState()));
     }
 
 
-    // 前端别接这个接口，不暴露它
     @RequestMapping("/{type}/callback")
-    public ResponseData login(@PathVariable String type, AuthCallback callback) {
-        return ResponseData.success(oauthService.loginByThirdParty(factory.get(type), callback));
+    public void login(@PathVariable String type, AuthCallback callback, HttpServletResponse response) throws IOException {
+        UserLogVO userLogVO = oauthService.loginByThirdParty(factory.get(type), callback);
+        StringBuilder redUrl = new StringBuilder();
+        if (userLogVO.getSocialUsrId() != null) {
+            redUrl.append(FIRST).append(userLogVO.getSocialUsrId());
+        }else {
+            redUrl.append(NOT_FIRST)
+                    .append(userLogVO.getUser().getStuId())
+                    .append("&")
+                    .append("token=")
+                    .append(userLogVO.getToken());
+        }
+        response.sendRedirect(redUrl.toString());
     }
 
+    @PostMapping("/admin/login/normal")
+    public ResponseData admLogin(@RequestBody AdminLoginForm adminLoginForm) {
+        if (adminLoginForm == null) return ResponseData.fail("请正确传参");
+        AdminLogVO adminVO = null;
+        if ((adminVO = oauthService.AmdLogin(adminLoginForm)) != null) {
+            return ResponseData.success(adminVO);
+        }
+        return ResponseData.fail("用户名或密码错误");
+    }
 
 
 }

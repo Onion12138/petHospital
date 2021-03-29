@@ -14,7 +14,7 @@ import javax.validation.constraints.NotBlank;
  */
 @Data
 //@Accessors(fluent = true)
-public class LoginForm {
+public class UserLoginForm {
 
     @NotBlank
     @Length(min = 11, max = 11)
