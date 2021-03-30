@@ -3,7 +3,9 @@ package com.ecnu.six.pethospital.oauth.controller;
 import com.ecnu.six.pethospital.common.ResponseData;
 import com.ecnu.six.pethospital.oauth.VO.AdminLogVO;
 import com.ecnu.six.pethospital.oauth.VO.UserLogVO;
+import com.ecnu.six.pethospital.oauth.entity.SocialUser;
 import com.ecnu.six.pethospital.oauth.form.AdminLoginForm;
+import com.ecnu.six.pethospital.oauth.form.AppSocialUsrForm;
 import com.ecnu.six.pethospital.oauth.form.UserLoginForm;
 import com.ecnu.six.pethospital.oauth.service.OauthService;
 import com.xkcoding.justauth.AuthRequestFactory;
@@ -55,6 +57,15 @@ public class AuthController {
         return ResponseData.fail("用户名或密码错误");
     }
 
+    // 学号是否已有
+    @GetMapping("/login/check")
+    public ResponseData check(@RequestParam("stuId") String stuId) {
+        if (oauthService.checkIfAvailable(stuId)) {
+            return ResponseData.success(true);
+        }
+        return ResponseData.success(false);
+    }
+
     // 注册通用
     @PostMapping("/register/all")
     public ResponseData register(@RequestBody UserLoginForm userLoginForm) {
@@ -62,6 +73,26 @@ public class AuthController {
         return ResponseData.success(oauthService.saveOne(userLoginForm));
     }
 
+    @PostMapping("/login/app/{type}")
+    public ResponseData login(@PathVariable String type, @RequestBody AppSocialUsrForm appSocialUsrForm) {
+        if (appSocialUsrForm == null) {
+            return ResponseData.fail("请正确传参");
+        }
+        SocialUser user = oauthService.saveSocialUser(appSocialUsrForm);
+        if (user == null) {
+            return ResponseData.fail("登录失败，请稍后重试");
+        }
+        return ResponseData.success(user.getId());
+    }
+
+
+    /**
+     * web端三方登录入口
+     * @param type
+     * @param response
+     * @return
+     * @throws IOException
+     */
     // 三方登录入口接口
     @GetMapping("/login/{type}")
     public ResponseData login(@PathVariable String type, HttpServletResponse response) throws IOException {
