@@ -1,8 +1,8 @@
 package com.ecnu.six.pethospital.oauth.entity;
 
 import com.ecnu.six.pethospital.oauth.form.AppSocialUsrForm;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import org.springframework.beans.BeanUtils;
 
 @Builder
 public class SocialUser {
@@ -107,6 +107,19 @@ public class SocialUser {
     }
 
     public SocialUser() {
+    }
+
+    public SocialUser(Integer id, String uuid, String source, String accessToken, Integer expirein, String nickName, String avatar, String location, String gender, String email) {
+        this.id = id;
+        this.uuid = uuid;
+        this.source = source;
+        this.accessToken = accessToken;
+        this.expirein = expirein;
+        this.nickName = nickName;
+        this.avatar = avatar;
+        this.location = location;
+        this.gender = gender;
+        this.email = email;
     }
 
     public SocialUser(AppSocialUsrForm form) {

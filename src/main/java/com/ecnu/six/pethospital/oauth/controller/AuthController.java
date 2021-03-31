@@ -78,12 +78,11 @@ public class AuthController {
         if (appSocialUsrForm == null) {
             return ResponseData.fail("请正确传参");
         }
-        SocialUser user = oauthService.saveSocialUser(appSocialUsrForm);
-        if (user == null) {
-            return ResponseData.fail("登录失败，请稍后重试");
+        if (!type.equals("google")) {
+            return ResponseData.fail("暂不支持");
         }
-        return ResponseData.success(user.getId());
-    }
+        return ResponseData.success(oauthService.loginAppByThirdParty(appSocialUsrForm));
+
 
 
     /**
