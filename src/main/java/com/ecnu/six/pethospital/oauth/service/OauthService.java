@@ -7,6 +7,7 @@ import com.ecnu.six.pethospital.oauth.config.CacheConfig;
 import com.ecnu.six.pethospital.oauth.entity.*;
 import com.ecnu.six.pethospital.oauth.enums.UserStatusEnum;
 import com.ecnu.six.pethospital.oauth.form.AdminLoginForm;
+import com.ecnu.six.pethospital.oauth.form.AppSocialUsrForm;
 import com.ecnu.six.pethospital.oauth.form.UserLoginForm;
 import com.ecnu.six.pethospital.oauth.mapper.AdmMapper;
 import com.ecnu.six.pethospital.oauth.mapper.LocalUserMapper;
@@ -122,6 +123,34 @@ public class OauthService {
         return true;
     }
 
+    public UserLogVO loginAppByThirdParty(AppSocialUsrForm form) {
+        String uuid = form.getUuid();
+        String source = form.getSource();
+        SocialUser socialUser;
+        UserLogVO res = new UserLogVO();
+        if ((socialUser = socialUserMapper.selectByUuidAndSource(uuid, source)) == null) {
+            // 存入
+            socialUser = saveSocialUser(form);
+            res.setSocialUsrId(socialUser.getId());
+        } else {
+            // 存在则查一下是否已经绑定
+            SLU slu = sluMapper.selectBySID(socialUser.getId());
+            if (slu != null) {
+                // 已经绑定
+                res.setUser(localUserMapper.selectByPrimaryKey(slu.getLocalUId()));
+                // 存cache信息
+                Pair<String, Timestamp> pair = MD5Utils.TokenUtil(res.getUser().getStuId());
+                cache.userTokenCache.putIfAbsent(pair.getLeft(), pair.getRight());
+                // 传回
+                res.setToken(pair.getLeft());
+            } else {
+                // 未绑定
+                res.setSocialUsrId(socialUser.getId());
+            }
+        }
+        return res;
+    }
+
     /**
      * 普通用户三方登录入口
      * @param request
@@ -189,6 +218,36 @@ public class OauthService {
         result.setName(adm.getAdmName());
         result.setToken(pair.getLeft());
         return result;
+    }
+
+    public SocialUser saveSocialUser(AppSocialUsrForm form) {
+        SocialUser socialUser;
+        socialUser = socialUserMapper.selectByUuidAndSource(form.getUuid(), form.getSource());
+
+        if (socialUser == null) {
+            socialUser = new SocialUser(form);
+        } else {
+            return socialUser;
+        }
+        try {
+            socialUserMapper.insertSelective(socialUser);
+        } catch (Exception e) {
+            // 说明已经有了
+            socialUser = socialUserMapper.selectByUuidAndSource(form.getUuid(), form.getSource());
+        }
+        return socialUser;
+    }
+    /**
+     * stuId是否可用
+     * @param stuId
+     * @return
+     */
+    public boolean checkIfAvailable(String stuId) {
+        if (!StringUtils.hasText(stuId)) {
+            return false;
+        }
+        LocalUser user = localUserMapper.selectByStuId(stuId);
+        return user == null || user.getId() == null;
     }
 
 }

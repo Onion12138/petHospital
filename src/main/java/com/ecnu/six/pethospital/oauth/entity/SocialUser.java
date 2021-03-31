@@ -1,5 +1,7 @@
 package com.ecnu.six.pethospital.oauth.entity;
 
+import com.ecnu.six.pethospital.oauth.form.AppSocialUsrForm;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 
 @Builder
@@ -102,5 +104,33 @@ public class SocialUser {
 
     public void setEmail(String email) {
         this.email = email == null ? null : email.trim();
+    }
+
+    public SocialUser() {
+    }
+
+    public SocialUser(Integer id, String uuid, String source, String accessToken, Integer expirein, String nickName, String avatar, String location, String gender, String email) {
+        this.id = id;
+        this.uuid = uuid;
+        this.source = source;
+        this.accessToken = accessToken;
+        this.expirein = expirein;
+        this.nickName = nickName;
+        this.avatar = avatar;
+        this.location = location;
+        this.gender = gender;
+        this.email = email;
+    }
+
+    public SocialUser(AppSocialUsrForm form) {
+        this.accessToken = form.getAccessToken();
+        this.avatar = form.getAvatar();
+        this.email = form.getEmail();
+        this.expirein = form.getExpirein();
+        this.gender = form.getGender();
+        this.location = form.getLocation();
+        this.source = form.getSource();
+        this.uuid = form.getUuid();
+        this.nickName = form.getNickName();
     }
 }
