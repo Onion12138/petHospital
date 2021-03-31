@@ -82,6 +82,7 @@ public class AuthController {
             return ResponseData.fail("暂不支持");
         }
         return ResponseData.success(oauthService.loginAppByThirdParty(appSocialUsrForm));
+    }
 
 
 
