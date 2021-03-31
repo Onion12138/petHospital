@@ -23,9 +23,16 @@ public class CaseController {
         return ResponseData.success(caze);
     }
     @GetMapping("/findAll")
-    public ResponseData findAll(@RequestParam(defaultValue = "1") Integer page,
+    public ResponseData findAll(@RequestParam(defaultValue = "") String name,
+                                @RequestParam(defaultValue = "1") Integer page,
                                 @RequestParam(defaultValue = "5") Integer size) {
-        Page<Caze> casePage = caseService.findAll(page, size);
+        Page<Caze> casePage = null;
+        if ("".equals(name)) {
+            casePage = caseService.findByDisease(name, page, size);
+        }else {
+            casePage = caseService.findAll(page, size);
+        }
+
         return ResponseData.success(casePage);
     }
     @PostMapping("/deleteOne")
