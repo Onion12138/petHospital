@@ -82,7 +82,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from adm
     where adm_id = #{admId,jdbcType=INTEGER}
@@ -97,13 +97,13 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.ecnu.six.pethospital.oauth.entity.Adm">
+  <insert id="insert" parameterType="com.ecnu.six.pethospital.oauth.entity.Adm" useGeneratedKeys="true" keyProperty="id">
     insert into adm (adm_id, password, adm_name
       )
     values (#{admId,jdbcType=INTEGER}, #{password,jdbcType=VARCHAR}, #{admName,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.ecnu.six.pethospital.oauth.entity.Adm">
+  <insert id="insertSelective" parameterType="com.ecnu.six.pethospital.oauth.entity.Adm" useGeneratedKeys="true" keyProperty="id">
     insert into adm
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="admId != null">

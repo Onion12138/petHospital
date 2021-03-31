@@ -120,7 +120,7 @@
       #{avatar,jdbcType=VARCHAR}, #{location,jdbcType=VARCHAR}, #{gender,jdbcType=VARCHAR},
       #{email,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.ecnu.six.pethospital.oauth.entity.SocialUser">
+  <insert id="insertSelective" parameterType="com.ecnu.six.pethospital.oauth.entity.SocialUser" useGeneratedKeys="true" keyProperty="id">
     insert into social_usr
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">

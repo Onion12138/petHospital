@@ -110,7 +110,7 @@
     values (#{id,jdbcType=INTEGER}, #{localUId,jdbcType=INTEGER}, #{socialUId,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.ecnu.six.pethospital.oauth.entity.SLU">
+  <insert id="insertSelective" parameterType="com.ecnu.six.pethospital.oauth.entity.SLU" useGeneratedKeys="true" keyProperty="id">
     insert into s_l_u
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
