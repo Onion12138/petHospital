@@ -18,9 +18,9 @@ public class Department {
     private Integer id;
     private String name;
     private Integer pos1X;
-    private Integer pox1Y;
-    private Integer pox2X;
-    private Integer pox2Y;
+    private Integer pos1Y;
+    private Integer pos2X;
+    private Integer pos2Y;
     private String picture;
     private Integer principalId;
     private Boolean isPharmacy;

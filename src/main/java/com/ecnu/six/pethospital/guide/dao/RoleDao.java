@@ -19,6 +19,6 @@ public interface RoleDao {
     @Select("SELECT * FROM role WHERE id = #{id}")
     Role findRoleById(@Param("id") int id);
 
-    @Select("SELECT * FORM role")
+    @Select("SELECT * FROM role")
     List<Role> findAll();
 }

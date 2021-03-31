@@ -1,6 +1,5 @@
 package com.ecnu.six.pethospital.simulation.service;
 
-import com.ecnu.six.pethospital.guide.domain.Role;
 import com.ecnu.six.pethospital.simulation.dto.ProcessRequest;
 import com.ecnu.six.pethospital.simulation.dto.StepRequest;
 import com.ecnu.six.pethospital.simulation.vo.ProcessResponse;

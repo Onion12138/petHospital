@@ -4,7 +4,6 @@ import com.ecnu.six.pethospital.guide.domain.Department;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,7 +16,7 @@ import java.util.List;
 public interface DepartmentDao {
     @Select("SELECT * FROM department")
     @Results({
-            @Result(property = "principal", column = "principal_id", one = @One(select = "com.ecnu.six.pethospital.exam.dao.RoleDao.findRoleById"))
+            @Result(property = "principal", column = "principal_id", one = @One(select = "com.ecnu.six.pethospital.guide.dao.RoleDao.findRoleById"))
     })
     List<Department> findAll();
 }
