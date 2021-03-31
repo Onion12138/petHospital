@@ -230,7 +230,7 @@ public class OauthService {
             return socialUser;
         }
         try {
-            socialUserMapper.insertSelective(socialUser);
+            socialUserMapper.insert(socialUser);
         } catch (Exception e) {
             // 说明已经有了
             socialUser = socialUserMapper.selectByUuidAndSource(form.getUuid(), form.getSource());
