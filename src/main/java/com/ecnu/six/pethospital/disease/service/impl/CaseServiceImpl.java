@@ -3,7 +3,7 @@ package com.ecnu.six.pethospital.disease.service.impl;
 import com.ecnu.six.pethospital.disease.dao.CaseDao;
 import com.ecnu.six.pethospital.disease.domain.Caze;
 import com.ecnu.six.pethospital.disease.dto.CaseDTO;
-import com.ecnu.six.pethospital.disease.service.CazeService;
+import com.ecnu.six.pethospital.disease.service.CaseService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -21,7 +22,7 @@ import java.util.Optional;
  * @date 2021/3/22 -9:35 上午
  */
 @Service
-public class CazeServiceImpl implements CazeService {
+public class CaseServiceImpl implements CaseService {
     @Autowired
     private CaseDao caseDao;
 
@@ -64,5 +65,10 @@ public class CazeServiceImpl implements CazeService {
         caze.setCreateTime(LocalDateTime.parse(caseDTO.getCreateTime(), formatter));
         caze.setUpdateTime(LocalDateTime.now());
         caseDao.save(caze);
+    }
+
+    @Override
+    public List<Caze> findByDisease(String name) {
+        return caseDao.findAllByName(name);
     }
 }

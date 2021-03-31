@@ -3,7 +3,7 @@ package com.ecnu.six.pethospital.disease.controller;
 import com.ecnu.six.pethospital.common.ResponseData;
 import com.ecnu.six.pethospital.disease.domain.Caze;
 import com.ecnu.six.pethospital.disease.dto.CaseDTO;
-import com.ecnu.six.pethospital.disease.service.impl.CazeServiceImpl;
+import com.ecnu.six.pethospital.disease.service.impl.CaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/case")
 public class CaseController {
     @Autowired
-    private CazeServiceImpl caseService;
+    private CaseServiceImpl caseService;
     @GetMapping("/findOne")
     public ResponseData findOne(@RequestParam Long caseId) {
         Caze caze = caseService.findOne(caseId);
@@ -42,5 +42,9 @@ public class CaseController {
     public ResponseData updateOne(@RequestBody CaseDTO caseDTO) {
         caseService.updateOne(caseDTO);
         return ResponseData.success();
+    }
+    @GetMapping("findByDisease")
+    public ResponseData findByDisease(@RequestParam String name) {
+        return ResponseData.success(caseService.findByDisease(name));
     }
 }

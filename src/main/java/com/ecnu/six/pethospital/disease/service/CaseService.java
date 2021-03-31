@@ -4,11 +4,13 @@ import com.ecnu.six.pethospital.disease.domain.Caze;
 import com.ecnu.six.pethospital.disease.dto.CaseDTO;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
+
 /**
  * @author onion
  * @date 2021/3/22 -9:35 上午
  */
-public interface CazeService {
+public interface CaseService {
     Caze findOne(Long caseId);
 
     Page<Caze> findAll(Integer page, Integer size);
@@ -18,4 +20,6 @@ public interface CazeService {
     void addOne(CaseDTO caseDTO);
 
     void updateOne(CaseDTO caseDTO);
+
+    List<Caze> findByDisease(String name);
 }
