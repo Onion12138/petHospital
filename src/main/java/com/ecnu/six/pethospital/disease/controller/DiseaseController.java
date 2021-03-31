@@ -43,4 +43,5 @@ public class DiseaseController {
         diseaseService.deleteOne(diseaseId);
         return ResponseData.success();
     }
+
 }
