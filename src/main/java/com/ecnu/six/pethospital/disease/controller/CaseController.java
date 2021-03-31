@@ -28,9 +28,9 @@ public class CaseController {
                                 @RequestParam(defaultValue = "5") Integer size) {
         Page<Caze> casePage = null;
         if ("".equals(name)) {
-            casePage = caseService.findByDisease(name, page, size);
-        }else {
             casePage = caseService.findAll(page, size);
+        }else {
+            casePage = caseService.findByDisease(name, page, size);
         }
 
         return ResponseData.success(casePage);
