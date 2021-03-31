@@ -43,9 +43,9 @@ public class GuideServiceImpl implements GuideService {
             List<EquipmentResponse> equipmentResponses = new LinkedList<>();
             Integer[] departmentPostion = new Integer[4];
             departmentPostion[0] = department.getPos1X();
-            departmentPostion[1] = department.getPox1Y();
-            departmentPostion[2] = department.getPox2X();
-            departmentPostion[3] = department.getPox2Y();
+            departmentPostion[1] = department.getPos1Y();
+            departmentPostion[2] = department.getPos2X();
+            departmentPostion[3] = department.getPos2Y();
             for(Equipment equipment : equipments) {
                 Integer[] pos = new Integer[2];
                 pos[0] = equipment.getPosX();

@@ -16,6 +16,6 @@ import java.util.List;
 @Mapper
 @Repository
 public interface EquipmentDao {
-    @Select("SELECT * FORM equipment WHERE department_id = #{departmentId}")
+    @Select("SELECT * FROM equipment WHERE department_id = #{departmentId}")
     List<Equipment> findEquipmentByDepartmentId(@Param("departmentId") int departmentId);
 }
