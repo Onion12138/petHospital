@@ -25,18 +25,35 @@ public class DiseaseServiceImpl implements DiseaseService {
         List<Disease> diseaseList = diseaseDao.findAll();
         List<DiseaseVO> diseaseVOList = new ArrayList<>();
         for (Disease disease : diseaseList) {
-            DiseaseVO diseaseVO = new DiseaseVO();
+//            DiseaseVO diseaseVO = new DiseaseVO();
+//            if (disease.getParent() == -1) {
+//                diseaseVO.setDiseaseId(disease.getDiseaseId());
+//                diseaseVO.setName(disease.getName());
+//                diseaseVO.setChildren(diseaseList.stream().filter(e->e.getParent().equals(disease.getDiseaseId()))
+//                        .map(this::transformVO).collect(Collectors.toList()));
+//                diseaseVOList.add(diseaseVO);
+//            }
+//            diseaseVO.setChildren(disease, diseaseList);
             if (disease.getParent() == -1) {
-                diseaseVO.setDiseaseId(disease.getDiseaseId());
-                diseaseVO.setName(disease.getName());
-                diseaseVO.setChildren(diseaseList.stream().filter(e->e.getParent().equals(disease.getDiseaseId()))
-                        .map(this::transformVO).collect(Collectors.toList()));
-                diseaseVOList.add(diseaseVO);
+                diseaseVOList.add(findChildren(disease, diseaseList));
             }
         }
         return diseaseVOList;
     }
 
+    private DiseaseVO findChildren(Disease disease, List<Disease> diseaseList) {
+        DiseaseVO diseaseVO = new DiseaseVO();
+        List<Disease> children = diseaseList.stream().filter(e -> e.getParent().equals(disease.getDiseaseId()))
+                .collect(Collectors.toList());
+        List<DiseaseVO> diseaseVOChildren = new ArrayList<>();
+        for (Disease child : children) {
+            diseaseVOChildren.add(findChildren(child, diseaseList));
+        }
+        diseaseVO.setChildren(diseaseVOChildren);
+        diseaseVO.setName(disease.getName());
+        diseaseVO.setDiseaseId(disease.getDiseaseId());
+        return diseaseVO;
+    }
     @Override
     public void addOne(String name, Long parent) {
         Disease disease = new Disease();
