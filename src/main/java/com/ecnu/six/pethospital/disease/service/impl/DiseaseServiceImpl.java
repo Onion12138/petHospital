@@ -49,7 +49,9 @@ public class DiseaseServiceImpl implements DiseaseService {
         for (Disease child : children) {
             diseaseVOChildren.add(findChildren(child, diseaseList));
         }
-        diseaseVO.setChildren(diseaseVOChildren);
+        if (!diseaseVOChildren.isEmpty()) {
+            diseaseVO.setChildren(diseaseVOChildren);
+        }
         diseaseVO.setName(disease.getName());
         diseaseVO.setDiseaseId(disease.getDiseaseId());
         return diseaseVO;

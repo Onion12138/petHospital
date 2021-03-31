@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -33,7 +32,7 @@ public class CaseServiceImpl implements CaseService {
     }
 
     @Override
-    public Page<Caze> findAll(Integer page, Integer size) {
+    public Page<Caze> findAll(int page, int size) {
         Pageable pageable = PageRequest.of(page - 1, size, Sort.Direction.DESC, "createTime");
         return caseDao.findAll(pageable);
     }
@@ -69,7 +68,8 @@ public class CaseServiceImpl implements CaseService {
     }
 
     @Override
-    public List<Caze> findByDisease(String name) {
-        return caseDao.findAllByName(name);
+    public Page<Caze> findByDisease(String name, int page, int size) {
+        Pageable pageable = PageRequest.of(page - 1, size, Sort.Direction.DESC, "createTime");
+        return caseDao.findAllByName(name, pageable);
     }
 }

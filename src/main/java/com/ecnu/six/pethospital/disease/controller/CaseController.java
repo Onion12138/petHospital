@@ -44,7 +44,9 @@ public class CaseController {
         return ResponseData.success();
     }
     @GetMapping("findByDisease")
-    public ResponseData findByDisease(@RequestParam String name) {
-        return ResponseData.success(caseService.findByDisease(name));
+    public ResponseData findByDisease(@RequestParam String name,
+                                      @RequestParam(defaultValue = "1") Integer page,
+                                      @RequestParam(defaultValue = "5") Integer size) {
+        return ResponseData.success(caseService.findByDisease(name, page, size));
     }
 }
