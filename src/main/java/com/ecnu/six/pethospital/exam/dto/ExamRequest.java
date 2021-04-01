@@ -18,4 +18,6 @@ public class ExamRequest {
     private String examName;
     private Integer creatorId;
     private String startTime;
+
+    private Integer usrId;
 }

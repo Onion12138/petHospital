@@ -24,7 +24,9 @@ public interface ExamDao {
             @Result(property = "adm", column = "creator_id",
                 one = @One(select = "com.ecnu.six.pethospital.exam.dao.AdmDao.findAdmById")),
             @Result(property = "paper", column = "paper_id",
-                one = @One(select = "com.ecnu.six.pethospital.exam.dao.PaperDao.findPaperById"))
+                one = @One(select = "com.ecnu.six.pethospital.exam.dao.PaperDao.findPaperById")),
+            @Result(property = "questionScores", column = "paper_id",
+                many = @Many(select = "com.ecnu.six.pethospital.exam.dao.QuestionScoreDao.findPaperAndQuestionById"))
     })
     List<Exam> findAvailableExams(LocalDateTime now);
 }

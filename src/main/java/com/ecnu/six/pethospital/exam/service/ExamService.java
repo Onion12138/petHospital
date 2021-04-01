@@ -15,7 +15,7 @@ public interface ExamService {
 
     void addExam(ExamRequest examRequest);
 
-    List<ExamResponse> findAvailableExams();
+    List<ExamResponse> findAvailableExams(ExamRequest examRequest);
 
     void saveScore(ExamScoreRequest examScoreRequest);
 }

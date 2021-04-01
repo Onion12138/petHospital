@@ -21,4 +21,8 @@ public class ExamResponse {
     private String admName;
     private String startTime;
     private String endTime;
+
+    private Integer totalScore;
+    private Integer questionNums;
+    private Boolean finished;
 }
