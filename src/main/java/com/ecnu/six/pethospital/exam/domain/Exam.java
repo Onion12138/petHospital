@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @author HavenTong
@@ -30,4 +31,5 @@ public class Exam {
 
     private Adm adm;
     private Paper paper;
+    private List<QuestionScore> questionScores;
 }

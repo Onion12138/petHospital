@@ -28,8 +28,8 @@ public class ExamController {
     }
 
     @PostMapping("/findAvailableExams")
-    public ResponseData findAvailableExams() {
-        return ResponseData.success(examService.findAvailableExams());
+    public ResponseData findAvailableExams(@RequestBody ExamRequest examRequest) {
+        return ResponseData.success(examService.findAvailableExams(examRequest));
     }
 
     @PostMapping("/saveScore")

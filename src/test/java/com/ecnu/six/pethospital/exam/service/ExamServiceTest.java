@@ -5,6 +5,7 @@ import com.ecnu.six.pethospital.exam.dao.ExamScoreDao;
 import com.ecnu.six.pethospital.exam.domain.Exam;
 import com.ecnu.six.pethospital.exam.domain.ExamScore;
 import com.ecnu.six.pethospital.exam.domain.Paper;
+import com.ecnu.six.pethospital.exam.domain.QuestionScore;
 import com.ecnu.six.pethospital.exam.dto.ExamRequest;
 import com.ecnu.six.pethospital.exam.dto.ExamScoreRequest;
 import com.ecnu.six.pethospital.exam.service.impl.ExamServiceImpl;
@@ -66,12 +67,19 @@ class ExamServiceTest {
     @Test
     @DisplayName("获取正确的可用考试")
     void shouldFindCorrectAvailableExams() {
+        ExamRequest examRequest = ExamRequest.builder().usrId(1).build();
         Adm adm0 = new Adm();
         adm0.setAdmId(1);
         adm0.setAdmName("haven");
         Adm adm1 = new Adm();
         adm1.setAdmId(2);
         adm1.setAdmName("onion");
+        QuestionScore questionScore0 = QuestionScore.builder().score(60).build();
+        QuestionScore questionScore1 = QuestionScore.builder().score(40).build();
+        QuestionScore questionScore2 = QuestionScore.builder().score(75).build();
+        QuestionScore questionScore3 = QuestionScore.builder().score(45).build();
+        List<QuestionScore> questionScores0 = new ArrayList<>(Arrays.asList(questionScore0, questionScore1));
+        List<QuestionScore> questionScores1 = new ArrayList<>(Arrays.asList(questionScore2, questionScore3));
         Paper paper0 = Paper.builder()
                 .paperId(2)
                 .paperName("第一张试卷")
@@ -87,17 +95,23 @@ class ExamServiceTest {
                 .examName("期末考试一")
                 .adm(adm0)
                 .paper(paper0)
-                .startTime(LocalDateTime.of(2021, 5, 12, 10, 0, 0)).build();
+                .startTime(LocalDateTime.of(2021, 5, 12, 10, 0, 0))
+                .questionScores(questionScores0)
+                .build();
         Exam exam1 = Exam.builder()
                 .examId(3)
                 .examName("期末考试二")
                 .adm(adm1)
                 .paper(paper1)
-                .startTime(LocalDateTime.of(2021, 6, 21, 8, 30, 0)).build();
+                .startTime(LocalDateTime.of(2021, 6, 21, 8, 30, 0))
+                .questionScores(questionScores1)
+                .build();
         List<Exam> exams = new ArrayList<>(Arrays.asList(exam0, exam1));
         when(examDao.findAvailableExams(any()))
                 .thenReturn(exams);
-        List<ExamResponse> examResponses = examService.findAvailableExams();
+        when(examScoreDao.findByExamIdAndUsrId(1, 1)).thenReturn(null);
+        when(examScoreDao.findByExamIdAndUsrId(3, 1)).thenReturn(100);
+        List<ExamResponse> examResponses = examService.findAvailableExams(examRequest);
         assertAll(
                 () -> assertEquals(2, examResponses.size()),
                 () -> assertEquals(1, examResponses.get(0).getExamId()),
@@ -107,13 +121,20 @@ class ExamServiceTest {
                 () -> assertEquals("haven", examResponses.get(0).getAdmName()),
                 () -> assertEquals("2021-05-12 10:00:00", examResponses.get(0).getStartTime()),
                 () -> assertEquals("2021-05-12 11:00:00", examResponses.get(0).getEndTime()),
+                () -> assertEquals(2, examResponses.get(0).getQuestionNums()),
+                () -> assertEquals(100, examResponses.get(0).getTotalScore()),
+                () -> assertEquals(false, examResponses.get(0).getFinished()),
                 () -> assertEquals(3, examResponses.get(1).getExamId()),
                 () -> assertEquals(4, examResponses.get(1).getPaperId()),
                 () -> assertEquals("期末考试二", examResponses.get(1).getExamName()),
                 () -> assertEquals(2, examResponses.get(1).getAdmId()),
                 () -> assertEquals("onion", examResponses.get(1).getAdmName()),
                 () -> assertEquals("2021-06-21 08:30:00", examResponses.get(1).getStartTime()),
-                () -> assertEquals("2021-06-21 10:30:00", examResponses.get(1).getEndTime())
+                () -> assertEquals("2021-06-21 10:30:00", examResponses.get(1).getEndTime()),
+                () -> assertEquals(2, examResponses.get(1).getQuestionNums()),
+                () -> assertEquals(120, examResponses.get(1).getTotalScore()),
+                () -> assertEquals(true, examResponses.get(1).getFinished())
+
         );
     }
 
