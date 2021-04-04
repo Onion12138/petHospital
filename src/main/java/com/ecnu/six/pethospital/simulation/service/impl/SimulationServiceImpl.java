@@ -45,6 +45,7 @@ public class SimulationServiceImpl implements SimulationService {
                     .id(role.getId())
                     .name(role.getName())
                     .picture(role.getPicture())
+                    .message(role.getMessage())
                     .build());
         }
         return roleResponses;
