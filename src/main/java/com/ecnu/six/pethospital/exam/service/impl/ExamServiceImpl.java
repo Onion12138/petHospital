@@ -78,12 +78,12 @@ public class ExamServiceImpl implements ExamService {
     }
 
     @Override
-    public void saveScore(ExamScoreRequest examScoreRequest) {
+    public boolean saveScore(ExamScoreRequest examScoreRequest) {
         ExamScore examScore = ExamScore.builder()
                 .examId(examScoreRequest.getExamId())
                 .usrId(examScoreRequest.getUsrId())
                 .score(examScoreRequest.getScore())
                 .build();
-        examScoreDao.saveScore(examScore);
+        return examScoreDao.saveScore(examScore) == 1;
     }
 }

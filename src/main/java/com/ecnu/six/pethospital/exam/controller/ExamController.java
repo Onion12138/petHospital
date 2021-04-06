@@ -34,7 +34,6 @@ public class ExamController {
 
     @PostMapping("/saveScore")
     public ResponseData saveScore(@RequestBody ExamScoreRequest examScoreRequest) {
-        examService.saveScore(examScoreRequest);
-        return ResponseData.success();
+        return ResponseData.success(examService.saveScore(examScoreRequest));
     }
 }
