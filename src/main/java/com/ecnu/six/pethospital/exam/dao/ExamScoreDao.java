@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
 @Mapper
 public interface ExamScoreDao {
     @Insert("INSERT INTO exam_score VALUES (#{examId}, #{usrId}, #{score})")
-    void saveScore(ExamScore examScore);
+    int saveScore(ExamScore examScore);
 
     @Select("SELECT score FROM exam_score WHERE exam_id = #{examId} AND usr_id = #{usrId}")
     Integer findByExamIdAndUsrId(@Param("examId")int examId, @Param("usrId")int usrId);

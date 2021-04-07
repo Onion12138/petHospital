@@ -18,4 +18,5 @@ public class RoleResponse {
     private Integer id;
     private String name;
     private String picture;
+    private String message;
 }
