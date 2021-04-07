@@ -25,4 +25,6 @@ public class CaseDTO {
     private String treatment;
     private Boolean valid;
     private String createTime;
+    private String photoUri;
+    private String videoUri;
 }

@@ -33,6 +33,12 @@ public class Caze {
     @Column
     private Boolean valid;
 
+    @Column
+    private String photoUri;
+
+    @Column
+    private String videoUri;
+
     @JsonFormat(pattern = "yyyy-MM-dd")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @Column
