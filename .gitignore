@@ -1,6 +1,5 @@
 /.idea
 /target
-/src/main/resources/*.yml
 
 
 ### IntelliJ IDEA ###
@@ -8,3 +7,4 @@
 *.iws
 *.iml
 *.ipr
+src/main/resources/application.yml

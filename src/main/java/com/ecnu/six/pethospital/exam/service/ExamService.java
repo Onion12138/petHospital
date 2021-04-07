@@ -17,5 +17,5 @@ public interface ExamService {
 
     List<ExamResponse> findAvailableExams(ExamRequest examRequest);
 
-    void saveScore(ExamScoreRequest examScoreRequest);
+    boolean saveScore(ExamScoreRequest examScoreRequest);
 }
