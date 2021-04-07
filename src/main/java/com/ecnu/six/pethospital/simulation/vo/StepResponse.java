@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StepResponse {
+    private Integer id;
     private String name;
     private String message;
     private String picture;

@@ -17,5 +17,9 @@ public interface SimulationService {
     List<RoleResponse> getRoles();
     List<ProcessResponse> findProcessesByRoleId(ProcessRequest processRequest);
     List<StepResponse> findStepsByProcessId(StepRequest stepRequest);
-
+    List<ProcessResponse> findAllProcess();
+    void deleteProcessById(ProcessRequest processRequest);
+    void addProcessWithSteps(ProcessRequest processRequest);
+    void updateProcess(ProcessRequest processRequest);
+    void updateStep(StepRequest stepRequest);
 }

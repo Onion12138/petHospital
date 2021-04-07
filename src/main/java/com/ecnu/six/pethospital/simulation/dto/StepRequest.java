@@ -15,5 +15,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StepRequest {
+    private Integer id;
     private Integer processId;
+    private String name;
+    private String message;
+    private String picture;
+    private String video;
 }
