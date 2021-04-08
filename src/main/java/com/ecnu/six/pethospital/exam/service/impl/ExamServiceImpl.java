@@ -59,8 +59,8 @@ public class ExamServiceImpl implements ExamService {
             for (QuestionScore questionScore : questionScores) {
                 totalScore += questionScore.getScore();
             }
-            log.info(exam.getExamId().toString(), "usrId: ", examRequest.getUsrId());
-            Integer examScore = examScoreDao.findByExamIdAndUsrId(exam.getExamId(), examRequest.getUsrId());
+            Integer usrScore = examScoreDao.findByExamIdAndUsrId(exam.getExamId(), examRequest.getUsrId());
+            boolean finished = Objects.nonNull(usrScore);
             examResponses.add(ExamResponse.builder()
                     .examId(exam.getExamId())
                     .paperId(paper.getPaperId())
@@ -71,7 +71,8 @@ public class ExamServiceImpl implements ExamService {
                     .endTime(formatter.format(exam.getStartTime().plusMinutes(paper.getDuration())))
                     .totalScore(totalScore)
                     .questionNums(questionScores.size())
-                    .finished(Objects.nonNull(examScore))
+                    .finished(finished)
+                    .usrScore(usrScore)
                     .build());
         }
         return examResponses;
