@@ -11,8 +11,10 @@ import lombok.Getter;
 @Getter
 public enum  UserStatusEnum {
 
-    ACTIVE(1, "可用状态"),
-    FORBID(0, "被禁用状态"),;
+    ACTIVE(1, "普通可用状态"),
+    FORBID(0, "被禁用状态"),
+    ADMIN(44, "超级管理员状态"),
+    ;
 
     private final Byte code;
 

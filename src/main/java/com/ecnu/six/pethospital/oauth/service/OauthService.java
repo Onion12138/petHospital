@@ -92,12 +92,16 @@ public class OauthService {
      * @param form
      * @return
      */
-    public boolean saveOne(UserLoginForm form) {
+    public boolean saveOne(UserLoginForm form, boolean isAdmin) {
         try {
             LocalUser user = new LocalUser();
             user.setStuId(form.getStuId());
             user.setPassword(MD5Utils.pwdMd5(form.getPwd()));
-            user.setStatus(UserStatusEnum.ACTIVE.getCode()); // 枚举
+            if (isAdmin) {
+                user.setStatus(UserStatusEnum.ADMIN.getCode());
+            }else {
+                user.setStatus(UserStatusEnum.ACTIVE.getCode());
+            }
             if (StringUtils.hasText(form.getSocialUsrId())) {
                 SocialUser socialUser = socialUserMapper.selectByPrimaryKey(Integer.valueOf(form.getSocialUsrId()));
                 if (socialUser != null) {
@@ -157,7 +161,6 @@ public class OauthService {
      * @param callback
      * @return
      */
-    @Deprecated
     public AdminLogVO loginByThirdParty(AuthRequest request, AuthCallback callback) {
         AuthResponse response = request.login(callback);
         AuthUser authUser = (AuthUser) response.getData();
@@ -182,13 +185,12 @@ public class OauthService {
             userLogVO.setSocialUsrId(socialUser.getId());
         } else {
             // 存在则查一下是否已经绑定
-//            SLA sla = sluMapper.selectBySID(socialUser.getId());
-            SLA sla = null;
-            if (sla != null) {
+            SLU slu = sluMapper.selectBySID(socialUser.getId());
+            if (slu != null) {
                 // 已经绑定
-                userLogVO.setAdm(admMapper.selectByPrimaryKey(sla.getAdminId()));
+                userLogVO.setAdm(localUserMapper.selectByPrimaryKey(slu.getLocalUId()));
                 // 存cache信息
-                Pair<String, Timestamp> pair = MD5Utils.TokenUtil(String.valueOf(userLogVO.getAdm().getAdmId()) + userLogVO.getAdm().getAdmName());
+                Pair<String, Timestamp> pair = MD5Utils.TokenUtil(String.valueOf(userLogVO.getAdm().getStuId()));
                 cache.adminToken.add(pair.getLeft());
                 // 传回
                 userLogVO.setToken(pair.getLeft());
@@ -200,7 +202,30 @@ public class OauthService {
         return userLogVO;
     }
 
+    // 新的操作
+    public AdminLogVO AmdLoginNew(AdminLoginForm form) {
+        if (form == null) return null;
+        // 注：admName 是 stuId
+        LocalUser adm = judgeIfLoginSuccess(form.getAdmName(), form.getPwd());
+        if (adm == null) {
+            return null;
+        }
+        if (!UserStatusEnum.ADMIN.getCode().equals(adm.getStatus())) {
+            // 非管理员
+            return null;
+        }
+        AdminLogVO result = new AdminLogVO();
+        result.setAdm(adm);
+        // 搞token
+        Pair<String, Timestamp> pair = MD5Utils.TokenUtil(adm.getStuId());
+        cache.userTokenCache.putIfAbsent(pair.getLeft(), pair.getRight());
+        // 传回
+        result.setToken(pair.getLeft());
+        return result;
+    }
 
+
+    @Deprecated
     public AdminLogVO AmdLogin(AdminLoginForm form) {
         AdminLogVO result = new AdminLogVO();
         if (form == null) return result;
@@ -217,7 +242,7 @@ public class OauthService {
         Pair<String, Timestamp> pair = MD5Utils.TokenUtil(adm.getAdmName());
         cache.adminToken.add(pair.getLeft());
 
-        result.setAdm(adm);
+//        result.setAdm(adm);
         result.setToken(pair.getLeft());
         return result;
     }

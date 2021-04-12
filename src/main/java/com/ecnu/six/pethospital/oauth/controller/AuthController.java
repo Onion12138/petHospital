@@ -67,10 +67,17 @@ public class AuthController {
     }
 
     // 注册通用
+    // now only for normal user
     @PostMapping("/register/all")
     public ResponseData register(@RequestBody UserLoginForm userLoginForm) {
         if (userLoginForm == null) return ResponseData.fail("请正确传参");
-        return ResponseData.success(oauthService.saveOne(userLoginForm));
+        return ResponseData.success(oauthService.saveOne(userLoginForm, false));
+    }
+
+    @PostMapping("/register/adm")
+    public ResponseData registerForAdm(@RequestBody UserLoginForm userLoginForm) {
+        if (userLoginForm == null) return ResponseData.fail("请正确传参");
+        return ResponseData.success(oauthService.saveOne(userLoginForm, true));
     }
 
     @PostMapping("/login/app/{type}")
@@ -119,7 +126,7 @@ public class AuthController {
             redUrl.append(FIRST).append(userLogVO.getSocialUsrId());
         }else {
             redUrl.append(NOT_FIRST)
-                    .append(userLogVO.getAdm().getAdmId())
+                    .append(userLogVO.getAdm().getId()) // 返回主键id
                     .append("&")
                     .append("token=")
                     .append(userLogVO.getToken());
@@ -131,7 +138,7 @@ public class AuthController {
     public ResponseData admLogin(@RequestBody AdminLoginForm adminLoginForm) {
         if (adminLoginForm == null) return ResponseData.fail("请正确传参");
         AdminLogVO adminVO = null;
-        if ((adminVO = oauthService.AmdLogin(adminLoginForm)) != null) {
+        if ((adminVO = oauthService.AmdLoginNew(adminLoginForm)) != null) {
             return ResponseData.success(adminVO);
         }
         return ResponseData.fail("用户名或密码错误");

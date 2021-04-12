@@ -15,7 +15,7 @@ import javax.validation.constraints.NotBlank;
 public class AdminLoginForm {
 
     @NotBlank
-    private String admName; // 唯一的，由我们来插入好了，暂不提供注册接口
+    private String admName; // 还是stuid
 
     @NotBlank
     private String pwd;
