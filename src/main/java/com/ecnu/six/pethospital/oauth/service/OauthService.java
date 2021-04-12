@@ -287,4 +287,37 @@ public class OauthService {
         return user == null || user.getId() == null;
     }
 
+    public boolean change2adm(LocalUser user) {
+        try {
+            if (user == null) return false;
+            user.setStatus(UserStatusEnum.ADMIN.getCode());
+            localUserMapper.updateByPrimaryKey(user);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public boolean change2normal(LocalUser user) {
+        try {
+            if (user == null) return false;
+            user.setStatus(UserStatusEnum.ACTIVE.getCode());
+            localUserMapper.updateByPrimaryKey(user);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public boolean forbidUsr(LocalUser user) {
+        try {
+            if (user == null) return false;
+            user.setStatus(UserStatusEnum.FORBID.getCode());
+            localUserMapper.updateByPrimaryKey(user);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
 }

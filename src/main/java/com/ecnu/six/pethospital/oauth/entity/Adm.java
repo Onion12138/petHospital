@@ -1,5 +1,6 @@
 package com.ecnu.six.pethospital.oauth.entity;
 
+@Deprecated
 public class Adm {
     private Integer admId;
 
