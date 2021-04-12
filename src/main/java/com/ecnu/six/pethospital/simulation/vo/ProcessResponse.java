@@ -17,4 +17,5 @@ import lombok.NoArgsConstructor;
 public class ProcessResponse {
     private Integer id;
     private String name;
+    private Integer roleId;
 }

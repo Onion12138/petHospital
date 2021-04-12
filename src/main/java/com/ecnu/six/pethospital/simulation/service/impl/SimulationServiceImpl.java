@@ -72,6 +72,7 @@ public class SimulationServiceImpl implements SimulationService {
             processResponses.add(ProcessResponse.builder()
                     .id(process.getId())
                     .name(process.getName())
+                    .roleId(process.getRoleId())
                     .build());
         }
         return processResponses;
