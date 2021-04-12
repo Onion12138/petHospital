@@ -152,19 +152,20 @@ public class OauthService {
     }
 
     /**
-     * 普通用户三方登录入口
+     * 管理员三方登录入口
      * @param request
      * @param callback
      * @return
      */
-    public UserLogVO loginByThirdParty(AuthRequest request, AuthCallback callback) {
+    @Deprecated
+    public AdminLogVO loginByThirdParty(AuthRequest request, AuthCallback callback) {
         AuthResponse response = request.login(callback);
         AuthUser authUser = (AuthUser) response.getData();
         System.out.println(JSON.toJSONString(authUser));
         String uuid = authUser.getUuid();
         String source = authUser.getSource();
         SocialUser  socialUser = null;
-        UserLogVO userLogVO = new UserLogVO();
+        AdminLogVO userLogVO = new AdminLogVO();
         if ((socialUser = socialUserMapper.selectByUuidAndSource(uuid, source)) == null) {
             // 存入
             socialUser = SocialUser.builder()
@@ -181,13 +182,14 @@ public class OauthService {
             userLogVO.setSocialUsrId(socialUser.getId());
         } else {
             // 存在则查一下是否已经绑定
-            SLU slu = sluMapper.selectBySID(socialUser.getId());
-            if (slu != null) {
+//            SLA sla = sluMapper.selectBySID(socialUser.getId());
+            SLA sla = null;
+            if (sla != null) {
                 // 已经绑定
-                userLogVO.setUser(localUserMapper.selectByPrimaryKey(slu.getLocalUId()));
+                userLogVO.setAdm(admMapper.selectByPrimaryKey(sla.getAdminId()));
                 // 存cache信息
-                Pair<String, Timestamp> pair = MD5Utils.TokenUtil(userLogVO.getUser().getStuId());
-                cache.userTokenCache.putIfAbsent(pair.getLeft(), pair.getRight());
+                Pair<String, Timestamp> pair = MD5Utils.TokenUtil(String.valueOf(userLogVO.getAdm().getAdmId()) + userLogVO.getAdm().getAdmName());
+                cache.adminToken.add(pair.getLeft());
                 // 传回
                 userLogVO.setToken(pair.getLeft());
             } else {
@@ -215,9 +217,19 @@ public class OauthService {
         Pair<String, Timestamp> pair = MD5Utils.TokenUtil(adm.getAdmName());
         cache.adminToken.add(pair.getLeft());
 
-        result.setName(adm.getAdmName());
+        result.setAdm(adm);
         result.setToken(pair.getLeft());
         return result;
+    }
+
+    public boolean saveOneAdmin(AdminLoginForm form) throws Exception {
+        if (form == null) return false;
+        Adm adm = new Adm();
+        adm.setAdmName(form.getAdmName());
+        adm.setPassword(form.getPwd()); // 直接不加密了
+        int id = admMapper.insertSelective(adm);
+        log.info("saveOneAdmin, admId = {}", id);
+        return true;
     }
 
     public SocialUser saveSocialUser(AppSocialUsrForm form) {

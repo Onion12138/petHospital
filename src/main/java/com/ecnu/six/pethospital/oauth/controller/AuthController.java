@@ -87,7 +87,7 @@ public class AuthController {
 
 
     /**
-     * web端三方登录入口
+     * web端三方登录入口;web端用normal
      * @param type
      * @param response
      * @return
@@ -95,6 +95,7 @@ public class AuthController {
      */
     // 三方登录入口接口
     @GetMapping("/login/{type}")
+    @Deprecated
     public ResponseData login(@PathVariable String type, HttpServletResponse response) throws IOException {
         AuthRequest authRequest = factory.get(type);
         return ResponseData.success(authRequest.authorize(AuthStateUtils.createState()));
@@ -102,15 +103,23 @@ public class AuthController {
     }
 
 
+    /**
+     * admin 三方登录，用login/normal
+     * @param type
+     * @param callback
+     * @param response
+     * @throws IOException
+     */
     @RequestMapping("/{type}/callback")
+    @Deprecated
     public void login(@PathVariable String type, AuthCallback callback, HttpServletResponse response) throws IOException {
-        UserLogVO userLogVO = oauthService.loginByThirdParty(factory.get(type), callback);
+        AdminLogVO userLogVO = oauthService.loginByThirdParty(factory.get(type), callback);
         StringBuilder redUrl = new StringBuilder();
         if (userLogVO.getSocialUsrId() != null) {
             redUrl.append(FIRST).append(userLogVO.getSocialUsrId());
         }else {
             redUrl.append(NOT_FIRST)
-                    .append(userLogVO.getUser().getStuId())
+                    .append(userLogVO.getAdm().getAdmId())
                     .append("&")
                     .append("token=")
                     .append(userLogVO.getToken());
@@ -128,5 +137,13 @@ public class AuthController {
         return ResponseData.fail("用户名或密码错误");
     }
 
-
+    @PostMapping("/admin/register/normal")
+    public ResponseData register(@RequestBody AdminLoginForm adminLoginForm) {
+        if (adminLoginForm == null) return ResponseData.fail("请正确传参");
+        try {
+            return ResponseData.success(oauthService.saveOneAdmin(adminLoginForm));
+        } catch (Exception e) {
+            return ResponseData.fail("管理员创建失败");
+        }
+    }
 }

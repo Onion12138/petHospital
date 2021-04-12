@@ -1,5 +1,6 @@
 package com.ecnu.six.pethospital.oauth.VO;
 
+import com.ecnu.six.pethospital.oauth.entity.Adm;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,7 +16,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AdminLogVO {
 
-    private String name;
+    private Integer socialUsrId;
+
+    private Adm adm;
 
     private String token;
 
