@@ -65,7 +65,7 @@ public class UsrInfoController {
         return ResponseData.success(oauthService.change2normal(userMapper.selectByPrimaryKey(uid)));
     }
 
-    @GetMapping("/change2Normal")
+    @GetMapping("/change2Forbid")
     @LoginRequired(role = Role.ADMIN)
     public ResponseData changeUsr2Forbid(@RequestParam("usrId") Integer uid) {
         return ResponseData.success(oauthService.forbidUsr(userMapper.selectByPrimaryKey(uid)));

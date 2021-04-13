@@ -7,6 +7,7 @@ import com.ecnu.six.pethospital.exam.dto.QuestionRequest;
 import com.ecnu.six.pethospital.exam.service.impl.QuestionServiceImpl;
 import com.ecnu.six.pethospital.exam.vo.QuestionResponse;
 import com.ecnu.six.pethospital.oauth.entity.Adm;
+import com.ecnu.six.pethospital.oauth.entity.LocalUser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -77,9 +78,9 @@ class QuestionServiceTest {
     void shouldFindQuestionsByDiseaseId() {
         QuestionRequest questionRequest = QuestionRequest.builder()
                 .diseaseId(1).build();
-        Adm adm = new Adm();
-        adm.setAdmId(1);
-        adm.setAdmName("haven");
+        LocalUser adm = new LocalUser();
+        adm.setId(1);
+        adm.setNickName("haven");
         Disease disease = new Disease();
         disease.setDiseaseId(1L);
         disease.setName("传染病");
@@ -140,9 +141,9 @@ class QuestionServiceTest {
     void shouldFindCorrectQuestionsByKeyword() {
         QuestionRequest questionRequest = QuestionRequest.builder()
                 .keyword("传染病").build();
-        Adm adm = new Adm();
-        adm.setAdmId(1);
-        adm.setAdmName("haven");
+        LocalUser adm = new LocalUser();
+        adm.setId(1);
+        adm.setNickName("haven");
         Disease disease = new Disease();
         disease.setDiseaseId(1L);
         disease.setName("传染病");
@@ -203,9 +204,9 @@ class QuestionServiceTest {
     void shouldFindCorrectQuestionById() {
         QuestionRequest questionRequest = QuestionRequest.builder()
                 .questionId(1).build();
-        Adm adm = new Adm();
-        adm.setAdmId(1);
-        adm.setAdmName("haven");
+        LocalUser adm = new LocalUser();
+        adm.setId(1);
+        adm.setNickName("haven");
         Disease disease = new Disease();
         disease.setDiseaseId(1L);
         disease.setName("传染病");
@@ -240,9 +241,9 @@ class QuestionServiceTest {
     void shouldFindAllQuestions() {
         QuestionRequest questionRequest = QuestionRequest.builder()
                 .diseaseId(1).build();
-        Adm adm = new Adm();
-        adm.setAdmId(1);
-        adm.setAdmName("haven");
+        LocalUser adm = new LocalUser();
+        adm.setId(1);
+        adm.setNickName("haven");
         Disease disease = new Disease();
         disease.setDiseaseId(1L);
         disease.setName("传染病");

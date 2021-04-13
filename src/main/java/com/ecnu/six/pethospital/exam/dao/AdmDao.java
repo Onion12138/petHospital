@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
  */
 @Mapper
 @Repository
+@Deprecated
 public interface AdmDao {
     @Select("SELECT * FROM adm WHERE adm_id = #{admId}")
     Adm findAdmById(@Param("admId") int admId);

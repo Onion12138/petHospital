@@ -14,9 +14,9 @@ import java.util.Map;
  */
 public interface QuestionService {
 
-    void addQuestion(QuestionRequest questionRequest);
+    boolean addQuestion(QuestionRequest questionRequest);
 
-    void deleteQuestionById(QuestionRequest questionRequest);
+    boolean deleteQuestionById(QuestionRequest questionRequest);
 
     List<QuestionResponse> findQuestionsByDiseaseId(QuestionRequest questionRequest);
 
@@ -26,5 +26,5 @@ public interface QuestionService {
 
     List<QuestionResponse> findAll();
 
-    void updateQuestion(QuestionRequest questionRequest);
+    boolean updateQuestion(QuestionRequest questionRequest);
 }

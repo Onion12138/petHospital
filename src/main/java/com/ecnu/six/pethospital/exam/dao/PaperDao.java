@@ -31,7 +31,7 @@ public interface PaperDao {
     @Select("SELECT * FROM paper WHERE is_deleted = FALSE")
     @Results({
             @Result(property = "adm", column = "adm_id",
-                one = @One(select = "com.ecnu.six.pethospital.exam.dao.AdmDao.findAdmById"))
+                one = @One(select = "com.ecnu.six.pethospital.oauth.mapper.LocalUserMapper.selectByPrimaryKey"))
     })
     List<Paper> findAll();
 

@@ -1,6 +1,7 @@
 package com.ecnu.six.pethospital.exam.domain;
 
 import com.ecnu.six.pethospital.oauth.entity.Adm;
+import com.ecnu.six.pethospital.oauth.entity.LocalUser;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,5 +35,5 @@ public class Paper {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDateTime paperUpdatedTime;
 
-    private Adm adm;
+    private LocalUser adm;
 }

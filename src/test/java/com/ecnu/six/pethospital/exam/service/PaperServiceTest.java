@@ -11,6 +11,8 @@ import com.ecnu.six.pethospital.exam.service.impl.PaperServiceImpl;
 import com.ecnu.six.pethospital.exam.vo.PaperQuestionResponse;
 import com.ecnu.six.pethospital.exam.vo.PaperResponse;
 import com.ecnu.six.pethospital.oauth.entity.Adm;
+import com.ecnu.six.pethospital.oauth.entity.LocalUser;
+import com.ecnu.six.pethospital.oauth.mapper.LocalUserMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -41,7 +43,7 @@ class PaperServiceTest {
     private QuestionScoreDao questionScoreDao;
 
     @Mock
-    private AdmDao admDao;
+    private LocalUserMapper localUserDao;
 
     @InjectMocks
     private PaperServiceImpl paperService;
@@ -159,9 +161,9 @@ class PaperServiceTest {
                 .paperName("期末考试")
                 .admId(1)
                 .duration(60).build();
-        Adm adm = new Adm();
-        adm.setAdmId(1);
-        adm.setAdmName("haven");
+        LocalUser adm = new LocalUser();
+        adm.setId(1);
+        adm.setNickName("haven");
         Question question0 = Question.builder()
                 .questionId(2)
                 .stem("单选题0")
@@ -182,7 +184,7 @@ class PaperServiceTest {
         );
         when(questionScoreDao.findPaperAndQuestionById(1))
                 .thenReturn(questionScores);
-        when(admDao.findAdmById(1))
+        when(localUserDao.selectByPrimaryKey(1))
                 .thenReturn(adm);
         PaperResponse paperResponse = paperService.findPaperById(paperRequest);
         List<PaperQuestionResponse> responses = paperResponse.getQuestions();
@@ -209,12 +211,12 @@ class PaperServiceTest {
     @Test
     @DisplayName("获取正确的试卷列表")
     void shouldFindAllCorrectPapers() {
-        Adm adm0 = new Adm();
-        adm0.setAdmId(1);
-        adm0.setAdmName("haven");
-        Adm adm1 = new Adm();
-        adm1.setAdmId(2);
-        adm1.setAdmName("onion");
+        LocalUser adm0 = new LocalUser();
+        adm0.setId(1);
+        adm0.setNickName("haven");
+        LocalUser adm1 = new LocalUser();
+        adm1.setId(2);
+        adm1.setNickName("onion");
         Paper paper0 = Paper.builder()
                 .paperId(1)
                 .paperName("第一张试卷")

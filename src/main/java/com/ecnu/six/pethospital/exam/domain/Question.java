@@ -2,6 +2,7 @@ package com.ecnu.six.pethospital.exam.domain;
 
 import com.ecnu.six.pethospital.disease.domain.Disease;
 import com.ecnu.six.pethospital.oauth.entity.Adm;
+import com.ecnu.six.pethospital.oauth.entity.LocalUser;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,5 +38,5 @@ public class Question {
     private LocalDateTime questionUpdatedTime;
 
     private Disease disease;
-    private Adm adm;
+    private LocalUser adm;
 }

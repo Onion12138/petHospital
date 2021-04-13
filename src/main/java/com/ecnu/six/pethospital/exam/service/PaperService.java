@@ -11,11 +11,11 @@ import java.util.List;
  */
 public interface PaperService {
 
-    void addPaper(PaperRequest paperRequest);
+    boolean addPaper(PaperRequest paperRequest);
 
-    void updatePaper(PaperRequest paperRequest);
+    boolean updatePaper(PaperRequest paperRequest);
 
-    void deletePaper(PaperRequest paperRequest);
+    boolean deletePaper(PaperRequest paperRequest);
 
     PaperResponse findPaperById(PaperRequest paperRequest);
 
