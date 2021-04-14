@@ -9,15 +9,9 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.imageio.ImageIO;
 import javax.validation.constraints.NotNull;
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.security.MessageDigest;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 /**
  * @author LEO D PEN

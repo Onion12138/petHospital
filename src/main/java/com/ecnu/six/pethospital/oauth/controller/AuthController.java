@@ -3,7 +3,6 @@ package com.ecnu.six.pethospital.oauth.controller;
 import com.ecnu.six.pethospital.common.ResponseData;
 import com.ecnu.six.pethospital.oauth.VO.AdminLogVO;
 import com.ecnu.six.pethospital.oauth.VO.UserLogVO;
-import com.ecnu.six.pethospital.oauth.entity.SocialUser;
 import com.ecnu.six.pethospital.oauth.form.AdminLoginForm;
 import com.ecnu.six.pethospital.oauth.form.AppSocialUsrForm;
 import com.ecnu.six.pethospital.oauth.form.UserLoginForm;
@@ -14,7 +13,6 @@ import me.zhyd.oauth.model.AuthCallback;
 import me.zhyd.oauth.request.AuthRequest;
 import me.zhyd.oauth.utils.AuthStateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
