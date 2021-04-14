@@ -13,7 +13,7 @@ import java.util.concurrent.Executors;
 /**
  * @author LEO D PEN
  * @date 2021
- * @desc
+ * @desc 不使用本地缓存包，从简
  * @since
  */
 @Component
