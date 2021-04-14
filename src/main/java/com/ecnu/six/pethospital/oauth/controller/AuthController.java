@@ -126,7 +126,7 @@ public class AuthController {
             redUrl.append(FIRST).append(userLogVO.getSocialUsrId());
         }else {
             redUrl.append(NOT_FIRST)
-                    .append(userLogVO.getAdm().getId()) // 返回主键id
+                    .append(userLogVO.getAdm().getStuId()) // 返回学生号
                     .append("&")
                     .append("token=")
                     .append(userLogVO.getToken());
