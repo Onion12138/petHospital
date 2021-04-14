@@ -41,11 +41,11 @@ public class GuideServiceImpl implements GuideService {
         for(Department department : departments) {
             List<Equipment> equipments = equipmentDao.findEquipmentByDepartmentId(department.getId());
             List<EquipmentResponse> equipmentResponses = new LinkedList<>();
-            Integer[] departmentPostion = new Integer[4];
-            departmentPostion[0] = department.getPos1X();
-            departmentPostion[1] = department.getPos1Y();
-            departmentPostion[2] = department.getPos2X();
-            departmentPostion[3] = department.getPos2Y();
+            Integer[] departmentPosition = new Integer[4];
+            departmentPosition[0] = department.getPos1X();
+            departmentPosition[1] = department.getPos1Y();
+            departmentPosition[2] = department.getPos2X();
+            departmentPosition[3] = department.getPos2Y();
             for(Equipment equipment : equipments) {
                 Integer[] pos = new Integer[2];
                 pos[0] = equipment.getPosX();
@@ -73,7 +73,7 @@ public class GuideServiceImpl implements GuideService {
                         .message(department.getMessage())
                         .roleName(department.getPrincipal().getName())
                         .picture(department.getPicture())
-                        .position(departmentPostion)
+                        .position(departmentPosition)
                         .equipments(equipmentResponses)
                         .medicines(medicineResponses)
                         .build());
@@ -85,7 +85,7 @@ public class GuideServiceImpl implements GuideService {
                         .message(department.getMessage())
                         .roleName(department.getPrincipal().getName())
                         .picture(department.getPicture())
-                        .position(departmentPostion)
+                        .position(departmentPosition)
                         .equipments(equipmentResponses)
                         .build());
             }
