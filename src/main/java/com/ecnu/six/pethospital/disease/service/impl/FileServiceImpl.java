@@ -10,6 +10,7 @@ import com.qiniu.storage.Region;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.storage.model.DefaultPutRet;
 import com.qiniu.util.Auth;
+import com.qiniu.util.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -79,19 +80,20 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public String uploadFile(InputStream stream, String fileName) {
+    public String uploadFile(InputStream stream, String fileName) throws IOException {
         return doUpload(stream, fileName);
     }
 
 
-    private String doUpload(InputStream stream, String fileName) {
+    private String doUpload(InputStream stream, String fileName) throws IOException {
         String key = LocalDateTime.now().toString() + "/" + fileName;
         Configuration cfg = new Configuration(Region.region2());
         UploadManager uploadManager = new UploadManager(cfg);
         Auth auth = Auth.create(accessKey, secretKey);
         String upToken = auth.uploadToken(bucket);
+        byte[] byteData = IOUtils.toByteArray(stream);
         try {
-            Response response = uploadManager.put(stream, key, upToken, null, null);
+            Response response = uploadManager.put(byteData, key, upToken);
             DefaultPutRet putRet = new Gson().fromJson(response.bodyString(), DefaultPutRet.class);
         } catch (QiniuException ex) {
             throw new RuntimeException("上传失败");

@@ -35,7 +35,7 @@ public class CacheConfig {
         EXECUTOR_SERVICE.submit(() -> {
             for (;;) {
                 try {
-                    Thread.sleep( 3600 * 1000);
+                    Thread.sleep( 3600 * 10000);
                 } catch (Exception e) {
                     if (e instanceof InterruptedException) {
                         // ignore

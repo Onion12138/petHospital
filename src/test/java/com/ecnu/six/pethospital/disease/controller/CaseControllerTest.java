@@ -76,22 +76,22 @@ public class CaseControllerTest {
 //        caseService.addOne(caseDTO);
 //        return ResponseData.success();
 //    }
-    @Test
-    @DisplayName("成功添加病例")
-    void shouldAddCorrectCase() throws Exception {
-        CaseDTO caseDTO = new CaseDTO(100L, "肺部感染","新冠肺炎","确诊新冠肺炎","服毒",
-                true, LocalDateTime.now().toString(),"http://www.baidu.com","");
-        ResultActions perform = mockMvc.perform(
-                post("/case/addOne")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(JSON.toJSONString(caseDTO))
-        );
-        verify(caseService, times(1))
-                .addOne(caseDTO);
-        perform.andExpect(status().isOk())
-                .andExpect(jsonPath("$.code").value(200))
-                .andExpect(jsonPath("$.msg").value("请求成功"));
-    }
+//    @Test
+//    @DisplayName("成功添加病例")
+//    void shouldAddCorrectCase() throws Exception {
+//        CaseDTO caseDTO = new CaseDTO(100L, "肺部感染","新冠肺炎","确诊新冠肺炎","服毒",
+//                true, LocalDateTime.now().toString(),"http://www.baidu.com","");
+//        ResultActions perform = mockMvc.perform(
+//                post("/case/addOne")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(JSON.toJSONString(caseDTO))
+//        );
+//        verify(caseService, times(1))
+//                .addOne(caseDTO);
+//        perform.andExpect(status().isOk())
+//                .andExpect(jsonPath("$.code").value(200))
+//                .andExpect(jsonPath("$.msg").value("请求成功"));
+//    }
 
 
 }

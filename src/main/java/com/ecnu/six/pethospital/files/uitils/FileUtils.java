@@ -73,16 +73,18 @@ public class FileUtils {
                                 @NotNull final String ext,
                                 @NotNull final FileService fileService)
             throws Exception {
-        Set<UploadInfo> uploadInfos = uploadInfoMap.getOrDefault(md5, new HashSet<>());
-        uploadInfos.add(new UploadInfo(md5, chunks, chunk, uploadFolderPath, fileName, ext));
-        uploadInfoMap.put(md5, uploadInfos);
+        synchronized (FileUtils.class) {
+            Set<UploadInfo> uploadInfos = uploadInfoMap.getOrDefault(md5, new HashSet<>());
+            uploadInfos.add(new UploadInfo(md5, chunks, chunk, uploadFolderPath, fileName, ext));
+            uploadInfoMap.put(md5, uploadInfos);
+        }
         // 每次调用一下
         boolean allUploaded = isAllUploaded(md5, chunks);
         int chunksNumber = Integer.parseInt(chunks);
 
         if (allUploaded) {
             mergeFile(chunksNumber, ext, fileName, uploadFolderPath);
-            return fileService.uploadFile(new FileInputStream(new java.io.File(uploadFolderPath + fileName + ext)), fileName);
+            return fileService.uploadFile(new FileInputStream(new java.io.File(uploadFolderPath + fileName + "." + ext)), fileName);
         }
         return String.valueOf(Integer.parseInt(chunk) + 1);
     }
@@ -110,7 +112,7 @@ public class FileUtils {
             s = new SequenceInputStream(s, s3);
         }
         //通过输出流向文件写入数据
-        saveStreamToFile(s, uploadFolderPath + fileName + ext);
+        saveStreamToFile(s, uploadFolderPath + fileName + "." + ext);
 
         //删除保存分块文件的文件夹
         deleteTempFolder(mergePath);
