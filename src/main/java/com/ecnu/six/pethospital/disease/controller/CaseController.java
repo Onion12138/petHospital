@@ -4,6 +4,8 @@ import com.ecnu.six.pethospital.common.ResponseData;
 import com.ecnu.six.pethospital.disease.domain.Caze;
 import com.ecnu.six.pethospital.disease.dto.CaseDTO;
 import com.ecnu.six.pethospital.disease.service.impl.CaseServiceImpl;
+import com.ecnu.six.pethospital.oauth.annotation.LoginRequired;
+import com.ecnu.six.pethospital.oauth.enums.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
@@ -36,16 +38,19 @@ public class CaseController {
         return ResponseData.success(casePage);
     }
     @PostMapping("/deleteOne")
+    @LoginRequired(role = Role.ADMIN)
     public ResponseData deleteOne(@RequestParam Long caseId) {
         caseService.deleteOne(caseId);
         return ResponseData.success();
     }
     @PostMapping("/addOne")
+    @LoginRequired(role = Role.ADMIN)
     public ResponseData addOne(@RequestBody CaseDTO caseDTO) {
         caseService.addOne(caseDTO);
         return ResponseData.success();
     }
     @PostMapping("/updateOne")
+    @LoginRequired(role = Role.ADMIN)
     public ResponseData updateOne(@RequestBody CaseDTO caseDTO) {
         caseService.updateOne(caseDTO);
         return ResponseData.success();
