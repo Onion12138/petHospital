@@ -25,6 +25,9 @@ public class CaseDTO {
     private String treatment;
     private Boolean valid;
     private String createTime;
-    private String photoUri;
-    private String videoUri;
+    private String inspectionVideoUri;
+    private String diagnosisPhotoUri;
+    private String diagnosisVideoUri;
+    private String treatmentPhotoUri;
+    private String treatmentVideoUri;
 }
