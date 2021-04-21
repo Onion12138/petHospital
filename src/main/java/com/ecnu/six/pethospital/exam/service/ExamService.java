@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface ExamService {
 
-    void addExam(ExamRequest examRequest);
+    boolean addExam(ExamRequest examRequest);
 
     List<ExamResponse> findAvailableExams(ExamRequest examRequest);
 

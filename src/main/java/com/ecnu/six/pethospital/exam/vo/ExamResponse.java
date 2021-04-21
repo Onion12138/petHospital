@@ -25,4 +25,5 @@ public class ExamResponse {
     private Integer totalScore;
     private Integer questionNums;
     private Boolean finished;
+    private Integer usrScore;
 }

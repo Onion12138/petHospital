@@ -17,12 +17,12 @@ public interface ExamDao {
 
     @Insert("INSERT INTO exam(paper_id, exam_name, creator_id, start_time) " +
             "VALUES (#{paperId}, #{examName}, #{creatorId}, #{startTime})")
-    void addExam(Exam exam);
+    int addExam(Exam exam);
 
     @Select("SELECT * FROM exam WHERE start_time >= #{now}")
     @Results({
             @Result(property = "adm", column = "creator_id",
-                one = @One(select = "com.ecnu.six.pethospital.exam.dao.AdmDao.findAdmById")),
+                one = @One(select = "com.ecnu.six.pethospital.oauth.mapper.LocalUserMapper.selectByPrimaryKey")),
             @Result(property = "paper", column = "paper_id",
                 one = @One(select = "com.ecnu.six.pethospital.exam.dao.PaperDao.findPaperById")),
             @Result(property = "questionScores", column = "paper_id",

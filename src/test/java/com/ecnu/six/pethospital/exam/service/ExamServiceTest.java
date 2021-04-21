@@ -11,6 +11,7 @@ import com.ecnu.six.pethospital.exam.dto.ExamScoreRequest;
 import com.ecnu.six.pethospital.exam.service.impl.ExamServiceImpl;
 import com.ecnu.six.pethospital.exam.vo.ExamResponse;
 import com.ecnu.six.pethospital.oauth.entity.Adm;
+import com.ecnu.six.pethospital.oauth.entity.LocalUser;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -68,12 +69,12 @@ class ExamServiceTest {
     @DisplayName("获取正确的可用考试")
     void shouldFindCorrectAvailableExams() {
         ExamRequest examRequest = ExamRequest.builder().usrId(1).build();
-        Adm adm0 = new Adm();
-        adm0.setAdmId(1);
-        adm0.setAdmName("haven");
-        Adm adm1 = new Adm();
-        adm1.setAdmId(2);
-        adm1.setAdmName("onion");
+        LocalUser adm0 = new LocalUser();
+        adm0.setId(1);
+        adm0.setNickName("haven");
+        LocalUser adm1 = new LocalUser();
+        adm1.setId(2);
+        adm1.setNickName("onion");
         QuestionScore questionScore0 = QuestionScore.builder().score(60).build();
         QuestionScore questionScore1 = QuestionScore.builder().score(40).build();
         QuestionScore questionScore2 = QuestionScore.builder().score(75).build();

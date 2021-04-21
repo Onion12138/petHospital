@@ -11,10 +11,13 @@ import com.ecnu.six.pethospital.exam.service.PaperService;
 import com.ecnu.six.pethospital.exam.vo.PaperQuestionResponse;
 import com.ecnu.six.pethospital.exam.vo.PaperResponse;
 import com.ecnu.six.pethospital.oauth.entity.Adm;
+import com.ecnu.six.pethospital.oauth.entity.LocalUser;
+import com.ecnu.six.pethospital.oauth.mapper.LocalUserMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
@@ -33,11 +36,11 @@ public class PaperServiceImpl implements PaperService {
     @Autowired
     private QuestionScoreDao questionScoreDao;
 
-    @Autowired
-    private AdmDao admDao;
+    @Resource
+    private LocalUserMapper localUserDao;
 
     @Override
-    public void addPaper(PaperRequest paperRequest) {
+    public boolean addPaper(PaperRequest paperRequest) {
         Paper paper = Paper.builder()
                 .paperName(paperRequest.getPaperName())
                 .admId(paperRequest.getAdmId())
@@ -50,11 +53,11 @@ public class PaperServiceImpl implements PaperService {
         for (QuestionScore questionScore : questionScores) {
             questionScore.setPaperId(paper.getPaperId());
         }
-        questionScoreDao.addQuestionScores(questionScores);
+        return questionScoreDao.addQuestionScores(questionScores) == questionScores.size();
     }
 
     @Override
-    public void updatePaper(PaperRequest paperRequest) {
+    public boolean updatePaper(PaperRequest paperRequest) {
         Paper paper = Paper.builder()
                 .paperId(paperRequest.getPaperId())
                 .paperName(paperRequest.getPaperName())
@@ -68,12 +71,12 @@ public class PaperServiceImpl implements PaperService {
         for (QuestionScore questionScore : questionScores) {
             questionScore.setPaperId(paper.getPaperId());
         }
-        questionScoreDao.addQuestionScores(questionScores);
+        return questionScoreDao.addQuestionScores(questionScores) == questionScores.size();
     }
 
     @Override
-    public void deletePaper(PaperRequest paperRequest) {
-        paperDao.deletePaperById(paperRequest.getPaperId());
+    public boolean deletePaper(PaperRequest paperRequest) {
+        return paperDao.deletePaperById(paperRequest.getPaperId()) == 1;
     }
 
     @Override
@@ -83,7 +86,7 @@ public class PaperServiceImpl implements PaperService {
             return new PaperResponse();
         }
         Paper paper= questionScores.get(0).getPaper();
-        Adm adm = admDao.findAdmById(paper.getAdmId());
+        LocalUser adm = localUserDao.selectByPrimaryKey(paper.getAdmId());
         List<PaperQuestionResponse> paperQuestionResponses = new LinkedList<>();
         for (QuestionScore questionScore : questionScores) {
             Question question = questionScore.getQuestion();
@@ -98,8 +101,8 @@ public class PaperServiceImpl implements PaperService {
         return PaperResponse.builder()
                 .paperId(paper.getPaperId())
                 .paperName(paper.getPaperName())
-                .admId(adm.getAdmId())
-                .admName(adm.getAdmName())
+                .admId(adm.getId())
+                .admName(adm.getNickName())
                 .duration(paper.getDuration())
                 .questions(paperQuestionResponses)
                 .build();
@@ -114,8 +117,8 @@ public class PaperServiceImpl implements PaperService {
             paperResponses.add(PaperResponse.builder()
                 .paperId(paper.getPaperId())
                 .paperName(paper.getPaperName())
-                .admId(paper.getAdm().getAdmId())
-                .admName(paper.getAdm().getAdmName())
+                .admId(paper.getAdm().getId())
+                .admName(paper.getAdm().getNickName())
                 .duration(paper.getDuration())
                 .paperCreatedTime(formatter.format(paper.getPaperCreatedTime()))
                 .paperUpdatedTime(formatter.format(paper.getPaperUpdatedTime()))

@@ -33,4 +33,33 @@ public class SimulationController {
     public ResponseData findStepsByProcessId(@RequestBody StepRequest stepRequest) {
         return ResponseData.success(simulationService.findStepsByProcessId(stepRequest));
     }
+
+    @PostMapping("/findAllProcess")
+    public ResponseData findAllProcess() {
+        return ResponseData.success(simulationService.findAllProcess());
+    }
+
+    @PostMapping("/deleteProcessById")
+    public ResponseData deleteProcessById(@RequestBody ProcessRequest processRequest) {
+        simulationService.deleteProcessById(processRequest);
+        return ResponseData.success();
+    }
+
+    @PostMapping("/addProcessWithSteps")
+    public ResponseData addProcessWithSteps(@RequestBody ProcessRequest processRequest) {
+        simulationService.addProcessWithSteps(processRequest);
+        return ResponseData.success();
+    }
+
+    @PostMapping("/updateProcess")
+    public ResponseData updateProcess(@RequestBody ProcessRequest processRequest) {
+        simulationService.updateProcess(processRequest);
+        return ResponseData.success();
+    }
+
+    @PostMapping("/updateStep")
+    public ResponseData updateStep(@RequestBody StepRequest stepRequest) {
+        simulationService.updateStep(stepRequest);
+        return ResponseData.success();
+    }
 }

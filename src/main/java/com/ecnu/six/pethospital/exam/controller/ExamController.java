@@ -23,8 +23,7 @@ public class ExamController {
 
     @PostMapping("/addExam")
     public ResponseData addExam(@RequestBody ExamRequest examRequest) {
-        examService.addExam(examRequest);
-        return ResponseData.success();
+        return ResponseData.success(examService.addExam(examRequest));
     }
 
     @PostMapping("/findAvailableExams")

@@ -28,7 +28,7 @@ public interface QuestionDao {
             @Result(property = "disease", column = "disease_id",
                     one = @One(select = "com.ecnu.six.pethospital.exam.dao.QuestionDiseaseDao.findDiseaseById")),
             @Result(property = "adm", column = "adm_id",
-                    one = @One(select = "com.ecnu.six.pethospital.exam.dao.AdmDao.findAdmById"))
+                    one = @One(select = "com.ecnu.six.pethospital.oauth.mapper.LocalUserMapper.selectByPrimaryKey"))
     })
     List<Question> findQuestionsByDiseaseId(@Param("diseaseId") int diseaseId);
 
@@ -38,7 +38,7 @@ public interface QuestionDao {
             @Result(property = "disease", column = "disease_id",
                     one = @One(select = "com.ecnu.six.pethospital.exam.dao.QuestionDiseaseDao.findDiseaseById")),
             @Result(property = "adm", column = "adm_id",
-                    one = @One(select = "com.ecnu.six.pethospital.exam.dao.AdmDao.findAdmById"))
+                    one = @One(select = "com.ecnu.six.pethospital.oauth.mapper.LocalUserMapper.selectByPrimaryKey"))
     })
     List<Question> findQuestionsByKeyword(@Param("keyword") String keyword);
 
@@ -48,7 +48,7 @@ public interface QuestionDao {
             @Result(property = "disease", column = "disease_id",
                     one = @One(select = "com.ecnu.six.pethospital.exam.dao.QuestionDiseaseDao.findDiseaseById")),
             @Result(property = "adm", column = "adm_id",
-                    one = @One(select = "com.ecnu.six.pethospital.exam.dao.AdmDao.findAdmById"))
+                    one = @One(select = "com.ecnu.six.pethospital.oauth.mapper.LocalUserMapper.selectByPrimaryKey"))
     })
     Question findQuestionById(@Param("questionId") int questionId);
 
@@ -58,7 +58,7 @@ public interface QuestionDao {
             @Result(property = "disease", column = "disease_id",
                     one = @One(select = "com.ecnu.six.pethospital.exam.dao.QuestionDiseaseDao.findDiseaseById")),
             @Result(property = "adm", column = "adm_id",
-                    one = @One(select = "com.ecnu.six.pethospital.exam.dao.AdmDao.findAdmById"))
+                    one = @One(select = "com.ecnu.six.pethospital.oauth.mapper.LocalUserMapper.selectByPrimaryKey"))
     })
     List<Question> findAll();
 

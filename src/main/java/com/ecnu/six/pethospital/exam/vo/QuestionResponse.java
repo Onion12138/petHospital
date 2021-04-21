@@ -30,8 +30,8 @@ public class QuestionResponse {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         return QuestionResponse.builder()
                 .questionId(question.getQuestionId())
-                .admId(question.getAdm().getAdmId())
-                .admName(question.getAdm().getAdmName())
+                .admId(question.getAdm().getId())
+                .admName(question.getAdm().getNickName())
                 .diseaseId(question.getDisease().getDiseaseId())
                 .diseaseName(question.getDisease().getName())
                 .stem(question.getStem())

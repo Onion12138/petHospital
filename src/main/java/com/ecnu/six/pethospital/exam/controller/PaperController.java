@@ -23,20 +23,17 @@ public class PaperController {
 
     @PostMapping("/addPaper")
     public ResponseData addPaper(@RequestBody PaperRequest paperRequest) {
-        paperService.addPaper(paperRequest);
-        return ResponseData.success();
+        return ResponseData.success(paperService.addPaper(paperRequest));
     }
 
     @PostMapping("/updatePaper")
     public ResponseData updatePaper(@RequestBody PaperRequest paperRequest) {
-        paperService.updatePaper(paperRequest);
-        return ResponseData.success();
+        return ResponseData.success(paperService.updatePaper(paperRequest));
     }
 
     @PostMapping("/deletePaper")
     public ResponseData deletePaper(@RequestBody PaperRequest paperRequest) {
-        paperService.deletePaper(paperRequest);
-        return ResponseData.success();
+        return ResponseData.success(paperService.deletePaper(paperRequest));
     }
 
     @PostMapping("/findPaperById")

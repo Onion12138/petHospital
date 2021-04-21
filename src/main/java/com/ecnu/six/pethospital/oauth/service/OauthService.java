@@ -92,12 +92,16 @@ public class OauthService {
      * @param form
      * @return
      */
-    public boolean saveOne(UserLoginForm form) {
+    public boolean saveOne(UserLoginForm form, boolean isAdmin) {
         try {
             LocalUser user = new LocalUser();
             user.setStuId(form.getStuId());
             user.setPassword(MD5Utils.pwdMd5(form.getPwd()));
-            user.setStatus(UserStatusEnum.ACTIVE.getCode()); // 枚举
+            if (isAdmin) {
+                user.setStatus(UserStatusEnum.ADMIN.getCode());
+            }else {
+                user.setStatus(UserStatusEnum.ACTIVE.getCode());
+            }
             if (StringUtils.hasText(form.getSocialUsrId())) {
                 SocialUser socialUser = socialUserMapper.selectByPrimaryKey(Integer.valueOf(form.getSocialUsrId()));
                 if (socialUser != null) {
@@ -152,19 +156,19 @@ public class OauthService {
     }
 
     /**
-     * 普通用户三方登录入口
+     * 管理员三方登录入口
      * @param request
      * @param callback
      * @return
      */
-    public UserLogVO loginByThirdParty(AuthRequest request, AuthCallback callback) {
+    public AdminLogVO loginByThirdParty(AuthRequest request, AuthCallback callback) {
         AuthResponse response = request.login(callback);
         AuthUser authUser = (AuthUser) response.getData();
         System.out.println(JSON.toJSONString(authUser));
         String uuid = authUser.getUuid();
         String source = authUser.getSource();
         SocialUser  socialUser = null;
-        UserLogVO userLogVO = new UserLogVO();
+        AdminLogVO userLogVO = new AdminLogVO();
         if ((socialUser = socialUserMapper.selectByUuidAndSource(uuid, source)) == null) {
             // 存入
             socialUser = SocialUser.builder()
@@ -184,10 +188,10 @@ public class OauthService {
             SLU slu = sluMapper.selectBySID(socialUser.getId());
             if (slu != null) {
                 // 已经绑定
-                userLogVO.setUser(localUserMapper.selectByPrimaryKey(slu.getLocalUId()));
+                userLogVO.setAdm(localUserMapper.selectByPrimaryKey(slu.getLocalUId()));
                 // 存cache信息
-                Pair<String, Timestamp> pair = MD5Utils.TokenUtil(userLogVO.getUser().getStuId());
-                cache.userTokenCache.putIfAbsent(pair.getLeft(), pair.getRight());
+                Pair<String, Timestamp> pair = MD5Utils.TokenUtil(String.valueOf(userLogVO.getAdm().getStuId()));
+                cache.adminToken.add(pair.getLeft());
                 // 传回
                 userLogVO.setToken(pair.getLeft());
             } else {
@@ -198,7 +202,30 @@ public class OauthService {
         return userLogVO;
     }
 
+    // 新的操作
+    public AdminLogVO AmdLoginNew(AdminLoginForm form) {
+        if (form == null) return null;
+        // 注：admName 是 stuId
+        LocalUser adm = judgeIfLoginSuccess(form.getAdmName(), form.getPwd());
+        if (adm == null) {
+            return null;
+        }
+        if (!UserStatusEnum.ADMIN.getCode().equals(adm.getStatus())) {
+            // 非管理员
+            return null;
+        }
+        AdminLogVO result = new AdminLogVO();
+        result.setAdm(adm);
+        // 搞token
+        Pair<String, Timestamp> pair = MD5Utils.TokenUtil(adm.getStuId());
+        cache.userTokenCache.putIfAbsent(pair.getLeft(), pair.getRight());
+        // 传回
+        result.setToken(pair.getLeft());
+        return result;
+    }
 
+
+    @Deprecated
     public AdminLogVO AmdLogin(AdminLoginForm form) {
         AdminLogVO result = new AdminLogVO();
         if (form == null) return result;
@@ -215,9 +242,19 @@ public class OauthService {
         Pair<String, Timestamp> pair = MD5Utils.TokenUtil(adm.getAdmName());
         cache.adminToken.add(pair.getLeft());
 
-        result.setName(adm.getAdmName());
+//        result.setAdm(adm);
         result.setToken(pair.getLeft());
         return result;
+    }
+
+    public boolean saveOneAdmin(AdminLoginForm form) throws Exception {
+        if (form == null) return false;
+        Adm adm = new Adm();
+        adm.setAdmName(form.getAdmName());
+        adm.setPassword(form.getPwd()); // 直接不加密了
+        int id = admMapper.insertSelective(adm);
+        log.info("saveOneAdmin, admId = {}", id);
+        return true;
     }
 
     public SocialUser saveSocialUser(AppSocialUsrForm form) {
@@ -248,6 +285,39 @@ public class OauthService {
         }
         LocalUser user = localUserMapper.selectByStuId(stuId);
         return user == null || user.getId() == null;
+    }
+
+    public boolean change2adm(LocalUser user) {
+        try {
+            if (user == null) return false;
+            user.setStatus(UserStatusEnum.ADMIN.getCode());
+            localUserMapper.updateByPrimaryKey(user);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public boolean change2normal(LocalUser user) {
+        try {
+            if (user == null) return false;
+            user.setStatus(UserStatusEnum.ACTIVE.getCode());
+            localUserMapper.updateByPrimaryKey(user);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public boolean forbidUsr(LocalUser user) {
+        try {
+            if (user == null) return false;
+            user.setStatus(UserStatusEnum.FORBID.getCode());
+            localUserMapper.updateByPrimaryKey(user);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
 }

@@ -11,6 +11,7 @@ import com.ecnu.six.pethospital.exam.dto.ExamScoreRequest;
 import com.ecnu.six.pethospital.exam.service.ExamService;
 import com.ecnu.six.pethospital.exam.vo.ExamResponse;
 import com.ecnu.six.pethospital.oauth.entity.Adm;
+import com.ecnu.six.pethospital.oauth.entity.LocalUser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,7 +36,7 @@ public class ExamServiceImpl implements ExamService {
     private ExamScoreDao examScoreDao;
 
     @Override
-    public void addExam(ExamRequest examRequest) {
+    public boolean addExam(ExamRequest examRequest) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         Exam exam = Exam.builder()
                 .paperId(examRequest.getPaperId())
@@ -43,7 +44,7 @@ public class ExamServiceImpl implements ExamService {
                 .creatorId(examRequest.getCreatorId())
                 .startTime(LocalDateTime.parse(examRequest.getStartTime(), formatter))
                 .build();
-        examDao.addExam(exam);
+        return examDao.addExam(exam) == 1;
     }
 
     @Override
@@ -53,25 +54,26 @@ public class ExamServiceImpl implements ExamService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         for (Exam exam : exams) {
             Paper paper = exam.getPaper();
-            Adm adm = exam.getAdm();
+            LocalUser adm = exam.getAdm();
             List<QuestionScore> questionScores = exam.getQuestionScores();
             int totalScore = 0;
             for (QuestionScore questionScore : questionScores) {
                 totalScore += questionScore.getScore();
             }
-            log.info(exam.getExamId().toString(), "usrId: ", examRequest.getUsrId());
-            Integer examScore = examScoreDao.findByExamIdAndUsrId(exam.getExamId(), examRequest.getUsrId());
+            Integer usrScore = examScoreDao.findByExamIdAndUsrId(exam.getExamId(), examRequest.getUsrId());
+            boolean finished = Objects.nonNull(usrScore);
             examResponses.add(ExamResponse.builder()
                     .examId(exam.getExamId())
                     .paperId(paper.getPaperId())
                     .examName(exam.getExamName())
-                    .admId(adm.getAdmId())
-                    .admName(adm.getAdmName())
+                    .admId(adm.getId())
+                    .admName(adm.getNickName())
                     .startTime(formatter.format(exam.getStartTime()))
                     .endTime(formatter.format(exam.getStartTime().plusMinutes(paper.getDuration())))
                     .totalScore(totalScore)
                     .questionNums(questionScores.size())
-                    .finished(Objects.nonNull(examScore))
+                    .finished(finished)
+                    .usrScore(usrScore)
                     .build());
         }
         return examResponses;

@@ -21,14 +21,12 @@ public class QuestionController {
 
     @PostMapping("/addQuestion")
     public ResponseData addQuestion(@RequestBody QuestionRequest questionRequest) {
-        questionService.addQuestion(questionRequest);
-        return ResponseData.success();
+        return ResponseData.success(questionService.addQuestion(questionRequest));
     }
 
     @PostMapping("/deleteQuestion")
     public ResponseData deleteQuestion(@RequestBody QuestionRequest questionRequest) {
-        questionService.deleteQuestionById(questionRequest);
-        return ResponseData.success();
+        return ResponseData.success(questionService.deleteQuestionById(questionRequest));
     }
 
     @PostMapping("/findQuestionByDiseaseId")
@@ -53,7 +51,6 @@ public class QuestionController {
 
     @PostMapping("/updateQuestion")
     public ResponseData updateQuestion(@RequestBody QuestionRequest questionRequest) {
-        questionService.updateQuestion(questionRequest);
-        return ResponseData.success();
+        return ResponseData.success(questionService.updateQuestion(questionRequest));
     }
 }

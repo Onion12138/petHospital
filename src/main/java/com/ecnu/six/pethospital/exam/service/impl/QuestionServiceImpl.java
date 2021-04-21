@@ -23,7 +23,7 @@ public class QuestionServiceImpl implements QuestionService {
     private QuestionDao questionDao;
 
     @Override
-    public void addQuestion(QuestionRequest questionRequest) {
+    public boolean addQuestion(QuestionRequest questionRequest) {
         Question question = Question.builder()
                 .admId(questionRequest.getAdmId())
                 .diseaseId(questionRequest.getDiseaseId())
@@ -32,12 +32,12 @@ public class QuestionServiceImpl implements QuestionService {
                 .answer(questionRequest.getAnswer())
                 .questionUpdatedTime(LocalDateTime.now())
                 .questionCreatedTime(LocalDateTime.now()).build();
-        questionDao.addQuestion(question);
+        return questionDao.addQuestion(question) == 1;
     }
 
     @Override
-    public void deleteQuestionById(QuestionRequest questionRequest) {
-        questionDao.deleteQuestionById(questionRequest.getQuestionId());
+    public boolean deleteQuestionById(QuestionRequest questionRequest) {
+        return questionDao.deleteQuestionById(questionRequest.getQuestionId()) == 1;
     }
 
     @Override
@@ -77,7 +77,7 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public void updateQuestion(QuestionRequest questionRequest) {
+    public boolean updateQuestion(QuestionRequest questionRequest) {
         Question question = Question.builder()
                 .questionId(questionRequest.getQuestionId())
                 .admId(questionRequest.getAdmId())
@@ -87,6 +87,6 @@ public class QuestionServiceImpl implements QuestionService {
                 .answer(questionRequest.getAnswer())
                 .questionUpdatedTime(LocalDateTime.now())
                 .build();
-        questionDao.updateQuestion(question);
+        return questionDao.updateQuestion(question) == 1;
     }
 }

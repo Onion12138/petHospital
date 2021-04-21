@@ -13,7 +13,7 @@ import java.util.concurrent.Executors;
 /**
  * @author LEO D PEN
  * @date 2021
- * @desc
+ * @desc 不使用本地缓存包，从简
  * @since
  */
 @Component
@@ -35,7 +35,7 @@ public class CacheConfig {
         EXECUTOR_SERVICE.submit(() -> {
             for (;;) {
                 try {
-                    Thread.sleep(24 * 3600 * 100);
+                    Thread.sleep( 3600 * 1000);
                 } catch (Exception e) {
                     if (e instanceof InterruptedException) {
                         // ignore

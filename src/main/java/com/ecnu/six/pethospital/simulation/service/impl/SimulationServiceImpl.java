@@ -65,11 +65,73 @@ public class SimulationServiceImpl implements SimulationService {
     }
 
     @Override
+    public List<ProcessResponse> findAllProcess() {
+        List<Process> processes = processDao.findAllProcess();
+        List<ProcessResponse> processResponses = new LinkedList<>();
+        for(Process process : processes) {
+            processResponses.add(ProcessResponse.builder()
+                    .id(process.getId())
+                    .name(process.getName())
+                    .roleId(process.getRoleId())
+                    .build());
+        }
+        return processResponses;
+    }
+
+    @Override
+    public void deleteProcessById(ProcessRequest processRequest) {
+        processDao.deleteProcessById(processRequest.getId());
+    }
+
+    @Override
+    public void addProcessWithSteps(ProcessRequest processRequest) {
+        Process process = Process.builder()
+                            .name(processRequest.getName())
+                            .roleId(processRequest.getRoleId())
+                            .build();
+        processDao.addProcess(process);
+        Integer id = process.getId();
+        int idx = 1;
+        for(StepRequest step : processRequest.getSteps()) {
+            stepDao.addStep(Step.builder()
+                    .name(step.getName())
+                    .message(step.getMessage())
+                    .picture(step.getPicture())
+                    .video(step.getVideo())
+                    .processId(id)
+                    .pOrder(idx)
+                    .build());
+            idx++;
+        }
+    }
+
+    @Override
+    public void updateProcess(ProcessRequest processRequest) {
+        processDao.updateProcess(Process.builder()
+                                    .id(processRequest.getId())
+                                    .name(processRequest.getName())
+                                    .roleId(processRequest.getRoleId())
+                                    .build());
+    }
+
+    @Override
+    public void updateStep(StepRequest stepRequest) {
+        stepDao.updateStep(Step.builder()
+                                .id(stepRequest.getId())
+                                .name(stepRequest.getName())
+                                .message(stepRequest.getMessage())
+                                .picture(stepRequest.getPicture())
+                                .video(stepRequest.getVideo())
+                                .build());
+    }
+
+    @Override
     public List<StepResponse> findStepsByProcessId(StepRequest stepRequest) {
         List<Step> steps = stepDao.findStepsByProcessId(stepRequest.getProcessId());
         List<StepResponse> stepResponses = new LinkedList<>();
         for(Step step : steps) {
             stepResponses.add(StepResponse.builder()
+                    .id(step.getId())
                     .name(step.getName())
                     .message(step.getMessage())
                     .picture(step.getPicture())
@@ -78,4 +140,6 @@ public class SimulationServiceImpl implements SimulationService {
         }
         return stepResponses;
     }
+
+
 }

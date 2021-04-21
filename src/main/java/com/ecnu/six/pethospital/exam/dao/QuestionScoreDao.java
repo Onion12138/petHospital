@@ -20,10 +20,10 @@ public interface QuestionScoreDao {
             "(#{item.paperId}, #{item.questionId}, #{item.score})" +
             "</foreach>" +
             "</script>")
-    void addQuestionScores(List<QuestionScore> questionScores);
+    int addQuestionScores(List<QuestionScore> questionScores);
 
     @Delete("DELETE FROM question_score WHERE paper_id = #{paperId}")
-    void deleteQuestionScoreByPaperId(int paperId);
+    int deleteQuestionScoreByPaperId(int paperId);
 
     @Select("SELECT * FROM question_score WHERE paper_id = #{paperId}")
     @Results({
