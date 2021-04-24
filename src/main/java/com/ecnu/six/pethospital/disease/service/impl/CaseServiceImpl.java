@@ -64,6 +64,7 @@ public class CaseServiceImpl implements CaseService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         caze.setCreateTime(LocalDateTime.parse(caseDTO.getCreateTime(), formatter));
         caze.setUpdateTime(LocalDateTime.now());
+        caze.setValid(true);
         caseDao.save(caze);
     }
 
