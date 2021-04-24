@@ -31,8 +31,9 @@ public class FileUtils {
      * @return
      * @throws Exception
      */
-    public static boolean isImage(Object tempFile) {
+    public static boolean isImage(Object tempFile, String ext) {
         try {
+            if ("png".equals(ext) || "jpg".equals(ext)) return true;
             return null != ImageIO.createImageInputStream(tempFile);
         } catch (Exception e) {
             return false;
@@ -84,7 +85,7 @@ public class FileUtils {
 
         if (allUploaded) {
             mergeFile(chunksNumber, ext, fileName, uploadFolderPath);
-            return fileService.uploadFile(new FileInputStream(new java.io.File(uploadFolderPath + fileName + "." + ext)), fileName);
+            return fileService.uploadFile(new java.io.File(uploadFolderPath + fileName + "." + ext), fileName);
         }
         return String.valueOf(Integer.parseInt(chunk) + 1);
     }

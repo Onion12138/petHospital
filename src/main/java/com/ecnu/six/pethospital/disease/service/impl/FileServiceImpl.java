@@ -11,13 +11,13 @@ import com.qiniu.storage.UploadManager;
 import com.qiniu.storage.model.DefaultPutRet;
 import com.qiniu.util.Auth;
 import com.qiniu.util.IOUtils;
+import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.URLEncoder;
 import java.time.LocalDateTime;
 import java.util.concurrent.ConcurrentHashMap;
@@ -80,8 +80,11 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public String uploadFile(InputStream stream, String fileName) throws IOException {
-        return doUpload(stream, fileName);
+    public String uploadFile(File file, String fileName) throws IOException {
+        MultipartFile multipartFile = new MockMultipartFile(file.getName(), fileName,
+                ContentType.APPLICATION_OCTET_STREAM.toString() ,new FileInputStream(file));
+        return uploadFile(multipartFile);
+//        return doUpload(stream, fileName);
     }
 
 

@@ -58,7 +58,7 @@ public class BigFileUploadController {
                                    @RequestParam("file") MultipartFile file) { // 文件
         String fileChunkName;
         try {
-            if (FileUtils.isImage(file)) return ResponseData.fail("图片类文件不适用");
+            if (FileUtils.isImage(file, ext)) return ResponseData.fail("图片类文件不适用");
             int index;
             // 根文件夹位置
             String uploadFolderPath = FileUtils.getRealPath();
