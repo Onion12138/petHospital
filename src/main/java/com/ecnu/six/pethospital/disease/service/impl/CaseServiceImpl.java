@@ -61,7 +61,7 @@ public class CaseServiceImpl implements CaseService {
     public void updateOne(@Valid CaseDTO caseDTO) {
         Caze caze = new Caze();
         BeanUtils.copyProperties(caseDTO, caze);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         caze.setCreateTime(LocalDateTime.parse(caseDTO.getCreateTime(), formatter));
         caze.setUpdateTime(LocalDateTime.now());
         caseDao.save(caze);
