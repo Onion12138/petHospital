@@ -61,4 +61,10 @@ public class CaseController {
                                       @RequestParam(defaultValue = "5") Integer size) {
         return ResponseData.success(caseService.findByDisease(name, page, size));
     }
+    @GetMapping("findByKeyword")
+    public ResponseData findByKeyword(@RequestParam String keyword,
+                                      @RequestParam(defaultValue = "1") Integer page,
+                                      @RequestParam(defaultValue = "5") Integer size) {
+        return ResponseData.success(caseService.findByKeyword(keyword, page, size));
+    }
 }

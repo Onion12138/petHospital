@@ -72,4 +72,10 @@ public class CaseServiceImpl implements CaseService {
         Pageable pageable = PageRequest.of(page - 1, size, Sort.Direction.DESC, "createTime");
         return caseDao.findAllByName(name, pageable);
     }
+
+    @Override
+    public Page<Caze> findByKeyword(String keyword, Integer page, Integer size) {
+        Pageable pageable = PageRequest.of(page - 1, size, Sort.Direction.DESC, "createTime");
+        return caseDao.findAllByNameLike('%' + keyword + '%',pageable);
+    }
 }

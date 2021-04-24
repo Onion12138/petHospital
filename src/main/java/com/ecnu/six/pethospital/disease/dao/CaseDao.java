@@ -11,4 +11,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface CaseDao extends JpaRepository<Caze, Long> {
     Page<Caze> findAllByName(String name, Pageable pageable);
+    Page<Caze> findAllByNameLike(String name, Pageable pageable);
 }

@@ -20,4 +20,6 @@ public interface CaseService {
     void updateOne(CaseDTO caseDTO);
 
     Page<Caze> findByDisease(String name, int page, int size);
+
+    Page<Caze> findByKeyword(String keyword, Integer page, Integer size);
 }
