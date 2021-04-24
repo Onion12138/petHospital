@@ -26,15 +26,17 @@ public class CaseController {
     }
     @GetMapping("/findAll")
     public ResponseData findAll(@RequestParam(defaultValue = "") String name,
+                                @RequestParam(defaultValue = "") String keyword,
                                 @RequestParam(defaultValue = "1") Integer page,
                                 @RequestParam(defaultValue = "5") Integer size) {
         Page<Caze> casePage = null;
-        if ("".equals(name)) {
+        if ("".equals(name) && "".equals(keyword)) {
             casePage = caseService.findAll(page, size);
-        }else {
+        }else if ("".equals(keyword)){
             casePage = caseService.findByDisease(name, page, size);
+        }else {
+            casePage = caseService.findByKeyword(keyword, page, size);
         }
-
         return ResponseData.success(casePage);
     }
     @PostMapping("/deleteOne")
