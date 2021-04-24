@@ -2,6 +2,8 @@ package com.ecnu.six.pethospital.disease.service;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -11,7 +13,7 @@ import java.io.InputStream;
 public interface FileService {
     String uploadFile(MultipartFile file);
 
-    String uploadFile(InputStream stream, String fileName);
+    String uploadFile(File file, String fileName) throws IOException;
 
     @Deprecated
     boolean judgeMd5OfBigFile(String md5, Integer idx);

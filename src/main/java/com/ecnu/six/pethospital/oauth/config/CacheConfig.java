@@ -39,6 +39,7 @@ public class CacheConfig {
                 } catch (Exception e) {
                     if (e instanceof InterruptedException) {
                         // ignore
+                        log.info("CacheConfig -> EXECUTOR_SERVICE interrupted");
                     }else {
                         log.error("CacheConfig -> EXECUTOR_SERVICE exception", e);
                     }
