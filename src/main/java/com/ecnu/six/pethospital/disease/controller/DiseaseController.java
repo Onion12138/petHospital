@@ -3,8 +3,6 @@ package com.ecnu.six.pethospital.disease.controller;
 import com.ecnu.six.pethospital.common.ResponseData;
 import com.ecnu.six.pethospital.disease.service.DiseaseService;
 import com.ecnu.six.pethospital.disease.vo.DiseaseVO;
-import com.ecnu.six.pethospital.oauth.annotation.LoginRequired;
-import com.ecnu.six.pethospital.oauth.enums.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,14 +25,14 @@ public class DiseaseController {
     }
 
     @PostMapping("/addOne")
-    @LoginRequired(role = Role.ADMIN)
+//    @LoginRequired(role = Role.ADMIN)
     public ResponseData addOne(@RequestParam String name, @RequestParam Long parent) {
         diseaseService.addOne(name, parent);
         return ResponseData.success();
     }
 
     @PostMapping("/updateOne")
-    @LoginRequired(role = Role.ADMIN)
+//    @LoginRequired(role = Role.ADMIN)
     public ResponseData updateOne(@RequestParam Long diseaseId,
                                   @RequestParam String name,
                                   @RequestParam Long parent) {
@@ -43,7 +41,7 @@ public class DiseaseController {
     }
 
     @PostMapping("/deleteOne")
-    @LoginRequired(role = Role.ADMIN)
+//    @LoginRequired(role = Role.ADMIN)
     public ResponseData deleteOne(@RequestParam Long diseaseId) {
         diseaseService.deleteOne(diseaseId);
         return ResponseData.success();
