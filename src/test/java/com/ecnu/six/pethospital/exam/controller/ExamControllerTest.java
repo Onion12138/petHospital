@@ -105,7 +105,7 @@ class ExamControllerTest {
                 .andExpect(jsonPath("$.data[0].endTime").value("2021-03-29 11:30:00"))
                 .andExpect(jsonPath("$.data[0].totalScore").value(100))
                 .andExpect(jsonPath("$.data[0].questionNums").value(5))
-                .andExpect(jsonPath("$.data[0].done").value(true))
+                .andExpect(jsonPath("$.data[0].finished").value(true))
                 .andExpect(jsonPath("$.data[1].examId").value(3))
                 .andExpect(jsonPath("$.data[1].paperId").value(4))
                 .andExpect(jsonPath("$.data[1].examName").value("期末考试B"))
@@ -115,7 +115,7 @@ class ExamControllerTest {
                 .andExpect(jsonPath("$.data[1].endTime").value("2021-04-04 10:00:00"))
                 .andExpect(jsonPath("$.data[1].totalScore").value(120))
                 .andExpect(jsonPath("$.data[1].questionNums").value(6))
-                .andExpect(jsonPath("$.data[1].done").value(false));
+                .andExpect(jsonPath("$.data[1].finished").value(false));
 
     }
 

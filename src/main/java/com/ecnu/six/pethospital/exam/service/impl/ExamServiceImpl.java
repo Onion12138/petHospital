@@ -49,7 +49,7 @@ public class ExamServiceImpl implements ExamService {
 
     @Override
     public List<ExamResponse> findAvailableExams(ExamRequest examRequest) {
-        List<Exam> exams = examDao.findAvailableExams(LocalDateTime.now());
+        List<Exam> exams = examDao.findAvailableExams(LocalDateTime.now().minusHours(6));
         List<ExamResponse> examResponses = new LinkedList<>();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         for (Exam exam : exams) {
