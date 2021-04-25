@@ -218,7 +218,7 @@ public class OauthService {
         result.setAdm(adm);
         // 搞token
         Pair<String, Timestamp> pair = MD5Utils.TokenUtil(adm.getStuId());
-        cache.userTokenCache.putIfAbsent(pair.getLeft(), pair.getRight());
+        cache.adminToken.add(pair.getLeft());
         // 传回
         result.setToken(pair.getLeft());
         return result;
